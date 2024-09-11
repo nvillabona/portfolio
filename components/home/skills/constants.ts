@@ -10,6 +10,10 @@ export const languages = [
     {
         name: "Php",
         icon: "https://img.icons8.com/?size=100&id=fAMVO_fuoOuC&format=png&color=000000",
+    },
+    {
+        name: "SQL",
+        icon: "https://img.icons8.com/?size=100&id=13406&format=png&color=000000",
     }
 ];
 export const libraries = [

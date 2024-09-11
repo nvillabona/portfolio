@@ -1,38 +1,48 @@
-'use client'
-import React from 'react'
-import { libraries, languages, otherTools } from './constants';
+import React from "react";
+import { libraries, languages, otherTools } from "./constants";
+import Image from "next/image";
 
-function Skills() {
-    return (
-        <div>
-            <h2 className="text-3xl font-semibold mb-2">My Skills</h2>
-            <h5 className="text-xl font-semibold mb-2">Languages</h5>
-            <div className="flex mb-3">
-                {
-                    languages.map((skill) => (
-                        <img className='mr-2' key={skill.name} src={skill.icon} width={50} title={skill.name} />
-                    ))
-                }
-            </div>
-            <h5 className="text-xl font-semibold mb-2">Libraries and frameworks</h5>
-            <div className="flex mb-3">
-                {
-                    libraries.map((skill) => (
-                        <img className='mr-2' key={skill.name} src={skill.icon} width={50} title={skill.name} />
-                    ))
-                }
-            </div>
-
-            <h5 className="text-xl font-semibold mb-2">Other tools</h5>
-            <div className="flex mb-3">
-                {
-                    otherTools.map((skill) => (
-                        <img className='mr-2' key={skill.name} src={skill.icon} width={50} title={skill.name} />
-                    ))
-                }
-            </div>
-        </div>
-    )
+interface Skill {
+  name: string;
+  icon: string;
 }
 
-export default Skills
+function Skills() {
+  return (
+    <>
+      <h2 className="text-3xl font-semibold mb-2">My Skills</h2>
+
+      <SkillCategory title="Languages" skills={languages} />
+      <SkillCategory title="Libraries and frameworks" skills={libraries} />
+      <SkillCategory title="Other tools" skills={otherTools} />
+    </>
+  );
+}
+
+function SkillCategory({ title, skills }: { title: string; skills: Skill[] }) {
+  return (
+    <>
+      <h3 className="text-xl font-semibold mb-2">{title}</h3>
+      <div className="grid place-items-center xl:grid-cols-6 md:grid-cols-4 xs:grid-cols-3 mb-3 gap-2">
+        {skills.map((skill) => (
+          <SkillImage key={skill.name} skill={skill} />
+        ))}
+      </div>
+    </>
+  );
+}
+
+function SkillImage({ skill }: { skill: Skill }) {
+  return (
+    <Image
+      className="mr-2"
+      src={skill.icon}
+      width={50}
+      height={50}
+      alt={skill.name}
+      title={skill.name}
+    />
+  );
+}
+
+export default Skills;

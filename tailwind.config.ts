@@ -7,6 +7,23 @@ const config: Config = {
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
+    colors: {
+
+      'tom-thumb': {
+        '50': '#f2f7f3',
+        '100': '#e0ebe1',
+        '200': '#c3d7c6',
+        '300': '#9bbaa2',
+        '400': '#6f9879',
+        '500': '#4f7a5c',
+        '600': '#3b6047',
+        '700': '#34553f',
+        '800': '#273e2f',
+        '900': '#213327',
+        '950': '#121c16',
+      },
+    },
+
     extend: {
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",

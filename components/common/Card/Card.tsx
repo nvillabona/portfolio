@@ -8,7 +8,9 @@ interface CardProps {
 }
 
 function Card({ children, className }: CardProps) {
-    return <section className={`${styles.card} ${className}`}>{children}</section>;
+    return <section className={`${styles.card} ${className} p-5`}>
+        {children}
+    </section>;
 }
 
 export default Card;
