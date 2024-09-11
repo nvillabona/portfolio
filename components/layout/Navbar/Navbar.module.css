@@ -1,11 +1,13 @@
 .navContainer {
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     align-items: center;
-    padding: 1rem 2rem;
-    background-color: transparent;
+    padding-top: .5rem;
+    background: rgba(52, 85, 63, 1);
     color: white;
-    padding-bottom: 1em;
+    position: fixed;
+    z-index: 100;
+    width: 100%;
 }
 
 .navContainer>a {
@@ -14,6 +16,9 @@
 
 
 .navContainer>a:hover {
-    border-radius: .8em .3em;
     background-image: linear-gradient(to right, #ffffff4d, rgba(52, 85, 63, 1) 150%, #ffffff4d);
+}
+
+.selected {
+    border-bottom: 2px solid white;
 }
