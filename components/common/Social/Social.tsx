@@ -32,11 +32,11 @@ const socialNetworks = [
 
 function Social() {
   return (
-    <div className="flex justify-around w-full mb-4">
+    <div className="flex xs:justify-around md:justify-center w-full mb-4">
       {socialNetworks.map((network) => (
         <a
           key={network.name}
-          className="bg-tom-thumb-500  p-2 rounded-3xl mt-4 w-10 hover:bg-tom-thumb-300"
+          className="bg-tom-thumb-500 md:mx-4  p-2 rounded-3xl mt-4 w-10 hover:bg-tom-thumb-300"
           href={network.url}
           target="_blank"
           rel="noreferrer"

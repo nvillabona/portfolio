@@ -8,6 +8,14 @@ export const languages = [
         icon: "https://img.icons8.com/?size=100&id=uJM6fQYqDaZK&format=png&color=000000",
     },
     {
+        name: "Html",
+        icon: "https://img.icons8.com/?size=100&id=20909&format=png&color=000000",
+    },
+    {
+        name: "Css",
+        icon: "https://img.icons8.com/?size=100&id=7gdY5qNXaKC0&format=png&color=000000",
+    },
+    {
         name: "Php",
         icon: "https://img.icons8.com/?size=100&id=fAMVO_fuoOuC&format=png&color=000000",
     },
@@ -23,7 +31,7 @@ export const libraries = [
     },
     {
         name: "Next.js",
-        icon: "https://img.icons8.com/?size=100&id=yUdJlcKanVbh&format=png&color=000000",
+        icon: "https://img.icons8.com/?size=100&id=MWiBjkuHeMVq&format=png&color=000000",
     },
     {
         name: "Vue",

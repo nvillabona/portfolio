@@ -6,7 +6,6 @@
     white-space: nowrap;
     /* Keeps the content on a single line */
     /* Gives that scrolling effect as the typing happens */
-    letter-spacing: .05em;
 
     /* Adjust as needed */
     animation: typing 3s steps(40, end),
