@@ -35,7 +35,7 @@ function page() {
           </div>
         </div>
       </Card>
-      <Card className="mb-5">
+      <Card>
         <h2 className="text-3xl font-semibold mb-4">Languages I speak</h2>
         <div className="grid md:grid-cols-4 xs:grid-cols-2 place-items-center">
           <div className="flex flex-col items-center justify-center mb-2">
