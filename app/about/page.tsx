@@ -9,7 +9,7 @@ function page() {
       <Card>
         <div className="grid md:grid-cols-2 xs:grid-cols-1">
           <div>
-            <h1 className="text-3xl font-semibold">About</h1>
+            <h1 className="text-3xl font-semibold mb-4">About</h1>
             <p className="mb-2">
               I’m <strong>Nicolás Villabona</strong>, a Frontend Developer with
               over four years of experience. I specialize in React and Vue,

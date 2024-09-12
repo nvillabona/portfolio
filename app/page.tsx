@@ -15,14 +15,14 @@ export default function Home() {
               className={`
                 sm:text-5xl xs:text-3xl 
                 font-semibold 
-                mb-1 
+                mb-4 
                 xs:max-w-72 sm:max-w-md
                 ${styles.typewriter}`}
             >
               Nicolás Villabona
             </h1>
             <p className="text-2xl font-normal">
-              I&apos;m a sofware developer from Cali, Colombia.
+              Sofware engineer from Cali, Colombia.
             </p>
           </div>
           <div className="flex justify-center">
