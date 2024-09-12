@@ -16,7 +16,7 @@ function Experience() {
           {experiences.map((experience, index) => (
             <li
               key={index}
-              className="mb-4 pb-4 border-b-2 border-tom-thumb-700"
+              className="mb-4 pb-4 border-b-2 border-tom-thumb-700 last:border-b-0"
             >
               <h3 className="text-xl font-semibold">{experience.title}</h3>
               {experience.companyUrl ? (
@@ -55,9 +55,6 @@ function Experience() {
         </ul>
       </div>
       <div className="flex md:justify-end xs:justify-center">
-        <button className="bg-tom-thumb-500 text-white font-semibold p-2 rounded-lg mt-4">
-          Download Resume
-        </button>
         {pathname === "/" && (
           <Link
             href="/about"
