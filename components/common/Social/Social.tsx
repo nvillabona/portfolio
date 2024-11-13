@@ -19,6 +19,11 @@ const socialNetworks = [
     icon: "https://img.icons8.com/?size=100&id=41316&format=png&color=FFFFFF",
   },
   {
+    name: "BlueSky",
+    url: "https://bsky.app/profile/nvillabona.bsky.social",
+    icon: "https://img.icons8.com/?size=100&id=9229&format=png&color=FFFFFF"
+  },
+  {
     name: "Twitter",
     url: "https://twitter.com/n_villabona/",
     icon: "https://img.icons8.com/?size=100&id=phOKFKYpe00C&format=png&color=FFFFFF",
