@@ -17,6 +17,11 @@
   }
 }
 
+html{
+  background: rgba(33, 46, 37, 1);
+}
+
+
 body {
   color: rgb(var(--foreground-rgb));
   background: rgb(0, 0, 0);
