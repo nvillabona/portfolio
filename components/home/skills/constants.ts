@@ -67,5 +67,9 @@ export const otherTools = [
     {
         name: "Webpack",
         icon: "https://img.icons8.com/?size=100&id=QjbHx7WUskg1&format=png&color=000000",
+    },
+    {
+        name: "Vite",
+        icon: "https://img.icons8.com/?size=100&id=YO3YqSaTOu5K&format=png&color=000000"
     }
 ];

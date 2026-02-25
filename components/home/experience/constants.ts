@@ -1,9 +1,33 @@
 export const experiences = [
+        {
+        title: "Senior Frontend Developer",
+        company: "Perficient",
+        companyUrl: "https://www.perficient.com/",
+        period: "Sept 2025 - Present",
+        technologies: [
+            {
+                name: "JavaScript",
+                icon: "https://img.icons8.com/?size=100&id=108784&format=png&color=000000",
+            },
+            {
+                name: "TypeScript",
+                icon: "https://img.icons8.com/?size=100&id=uJM6fQYqDaZK&format=png&color=000000",
+            },
+            {
+                name: "React",
+                icon: "https://img.icons8.com/?size=100&id=122637&format=png&color=A9E3FF",
+            },
+            {
+                name: "Vite with module federation",
+                icon: "https://img.icons8.com/?size=100&id=YO3YqSaTOu5K&format=png&color=000000"
+            }
+        ],
+    },
     {
         title: "Web UI Developer",
         company: "Globant",
         companyUrl: "https://www.globant.com/",
-        period: "June 2022 - Present",
+        period: "June 2022 - Sept 2025",
         technologies: [
             {
                 name: "JavaScript",
