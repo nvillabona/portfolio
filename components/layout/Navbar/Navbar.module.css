@@ -41,3 +41,18 @@
 .selected {
     border-bottom: 2px solid white;
 }
+
+@media (max-width: 539px) {
+    .navSpacer {
+        display: none;
+    }
+
+    .navLinks {
+        flex: 1;
+        justify-content: flex-start;
+    }
+
+    .navLinks>a {
+        padding: 0.5em 0.6em;
+    }
+}
