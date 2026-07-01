@@ -1,21 +1,40 @@
 .navContainer {
     display: flex;
-    justify-content: center;
     align-items: center;
-    padding-top: .5rem;
+    padding: .5rem .75rem 0;
     background: rgba(52, 85, 63, 1);
     color: white;
     position: fixed;
     z-index: 100;
     width: 100%;
+    gap: .5rem;
 }
 
-.navContainer>a {
+.navSpacer {
+    flex: 1;
+}
+
+.navLinks {
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    min-width: 0;
+}
+
+.navActions {
+    display: flex;
+    flex: 1;
+    justify-content: flex-end;
+    align-items: center;
+    padding-bottom: .35rem;
+}
+
+.navLinks>a {
     padding: 0.5em 1em;
+    text-align: center;
 }
 
-
-.navContainer>a:hover {
+.navLinks>a:hover {
     background-image: linear-gradient(to right, #ffffff4d, rgba(52, 85, 63, 1) 150%, #ffffff4d);
 }
 

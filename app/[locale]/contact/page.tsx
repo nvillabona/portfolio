@@ -1,21 +1,22 @@
 import Card from "@/components/common/Card/Card";
 import Social from "@/components/common/Social/Social";
 import Image from "next/image";
-import React from "react";
+import { getTranslations } from "next-intl/server";
 
-function page() {
+async function page() {
+    const t = await getTranslations("Contact");
     return (
         <Card className="grid md:grid-cols-2 xs:grid-cols-1">
             <div className="flex flex-col xs:text-center md:text-start">
                 <h1
-                    className="sm:text-5xl xs:text-3xl 
-                font-semibold 
+                    className="sm:text-5xl xs:text-3xl
+                font-semibold
                 mb-1 "
                 >
-                    Contact
+                    {t("heading")}
                 </h1>
                 <p className="text-2xl font-normal">
-                    You can contact me at
+                    {t("intro")}
                 </p>
                 <Social />
             </div>

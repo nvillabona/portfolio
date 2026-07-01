@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslations } from "next-intl";
 import { libraries, languages, otherTools } from "./constants";
 import Image from "next/image";
 
@@ -8,13 +9,14 @@ interface Skill {
 }
 
 function Skills() {
+  const t = useTranslations("Skills");
   return (
     <>
-      <h2 className="text-3xl font-semibold mb-2">My Skills</h2>
+      <h2 className="text-3xl font-semibold mb-2">{t("heading")}</h2>
 
-      <SkillCategory title="Languages" skills={languages} />
-      <SkillCategory title="Libraries and frameworks" skills={libraries} />
-      <SkillCategory title="Other tools" skills={otherTools} />
+      <SkillCategory title={t("languages")} skills={languages} />
+      <SkillCategory title={t("libraries")} skills={libraries} />
+      <SkillCategory title={t("otherTools")} skills={otherTools} />
     </>
   );
 }

@@ -1,0 +1,64 @@
+{
+  "Metadata": {
+    "title": "Nicolás Villabona",
+    "description": "Nicolás Villabona Frontend-utvecklare"
+  },
+  "Navbar": {
+    "home": "Hem",
+    "about": "Om mig",
+    "contact": "Kontakt",
+    "language": "Språk"
+  },
+  "Home": {
+    "role": "Mjukvaruingenjör från Cali, Colombia."
+  },
+  "About": {
+    "heading": "Om mig",
+    "bio1": "Jag är <strong>Nicolás Villabona</strong>, en Frontend-utvecklare med över fyra års erfarenhet. Jag specialiserar mig på React och Vue och skapar dynamiska, skalbara webbapplikationer. Jag är skicklig inom HTML, CSS, Sass och UI-bibliotek som Tailwind och Material UI, vilket säkerställer både funktionalitet och estetik.",
+    "bio2": "Min bakgrund spänner över e-handel, interna applikationer och webb3-projekt. Jag lär mig ständigt, för närvarande fokuserad på TypeScript och mikrofrontends. Jag drivs av innovation och teamarbete.",
+    "languagesHeading": "Språk jag talar",
+    "languages": {
+      "spanish": "Spanska",
+      "english": "Engelska",
+      "french": "Franska",
+      "swedish": "Svenska",
+      "native": "Modersmål",
+      "advanced": "Avancerad",
+      "intermediate": "Medel",
+      "basic": "Nybörjare"
+    }
+  },
+  "Contact": {
+    "heading": "Kontakt",
+    "intro": "Du kan kontakta mig på"
+  },
+  "Skills": {
+    "heading": "Mina Färdigheter",
+    "languages": "Programmeringsspråk",
+    "libraries": "Bibliotek och ramverk",
+    "otherTools": "Andra verktyg"
+  },
+  "Experience": {
+    "heading": "Min Erfarenhet",
+    "technologiesUsed": "Använda teknologier:",
+    "readMore": "Läs mer om mig ➤",
+    "jobs": [
+      {
+        "title": "Senior Frontend-utvecklare",
+        "period": "Sept 2025 - Nutid"
+      },
+      {
+        "title": "Webb UI-utvecklare",
+        "period": "Juni 2022 - Sept 2025"
+      },
+      {
+        "title": "Mjukvaruutvecklare",
+        "period": "Dec 2021 - Juni 2022"
+      },
+      {
+        "title": "Frontend-utvecklare",
+        "period": "Okt 2020 - Dec 2021"
+      }
+    ]
+  }
+}

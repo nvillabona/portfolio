@@ -1,0 +1,64 @@
+{
+  "Metadata": {
+    "title": "Nicolás Villabona",
+    "description": "Nicolás Villabona Desarrollador Frontend"
+  },
+  "Navbar": {
+    "home": "Inicio",
+    "about": "Sobre mí",
+    "contact": "Contacto",
+    "language": "Idioma"
+  },
+  "Home": {
+    "role": "Ingeniero de software de Cali, Colombia."
+  },
+  "About": {
+    "heading": "Sobre mí",
+    "bio1": "Soy <strong>Nicolás Villabona</strong>, Desarrollador Frontend con más de cuatro años de experiencia. Me especializo en React y Vue, creando aplicaciones web dinámicas y escalables. Tengo experiencia en HTML, CSS, Sass y librerías de UI como Tailwind y Material UI, garantizando tanto funcionalidad como estética.",
+    "bio2": "Mi trayectoria abarca e-commerce, aplicaciones internas y proyectos web3. Siempre estoy aprendiendo, actualmente enfocado en TypeScript y microfrontends. Me impulsan la innovación y el trabajo en equipo.",
+    "languagesHeading": "Idiomas que hablo",
+    "languages": {
+      "spanish": "Español",
+      "english": "Inglés",
+      "french": "Francés",
+      "swedish": "Sueco",
+      "native": "Nativo",
+      "advanced": "Avanzado",
+      "intermediate": "Intermedio",
+      "basic": "Básico"
+    }
+  },
+  "Contact": {
+    "heading": "Contacto",
+    "intro": "Puedes contactarme en"
+  },
+  "Skills": {
+    "heading": "Mis Habilidades",
+    "languages": "Lenguajes",
+    "libraries": "Librerías y frameworks",
+    "otherTools": "Otras herramientas"
+  },
+  "Experience": {
+    "heading": "Mi Experiencia",
+    "technologiesUsed": "Tecnologías utilizadas:",
+    "readMore": "Lee más sobre mí ➤",
+    "jobs": [
+      {
+        "title": "Desarrollador Frontend Senior",
+        "period": "Sept 2025 - Presente"
+      },
+      {
+        "title": "Desarrollador Web UI",
+        "period": "Jun 2022 - Sept 2025"
+      },
+      {
+        "title": "Desarrollador de Software",
+        "period": "Dic 2021 - Jun 2022"
+      },
+      {
+        "title": "Desarrollador Frontend",
+        "period": "Oct 2020 - Dic 2021"
+      }
+    ]
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "Metadata": {
+    "title": "Nicolás Villabona",
+    "description": "Nicolás Villabona Frontend Developer"
+  },
+  "Navbar": {
+    "home": "Home",
+    "about": "About me",
+    "contact": "Contact",
+    "language": "Language"
+  },
+  "Home": {
+    "role": "Software engineer from Cali, Colombia."
+  },
+  "About": {
+    "heading": "About",
+    "bio1": "I’m <strong>Nicolás Villabona</strong>, a Frontend Developer with over four years of experience. I specialize in React and Vue, creating dynamic, scalable web applications. I’m skilled in HTML, CSS, Sass, and UI libraries like Tailwind and Material UI, ensuring both functionality and aesthetics.",
+    "bio2": "My background spans e-commerce, internal apps, and web3 projects. I’m always learning, currently focused on TypeScript and microfrontends. I’m driven by innovation and teamwork.",
+    "languagesHeading": "Languages I speak",
+    "languages": {
+      "spanish": "Spanish",
+      "english": "English",
+      "french": "French",
+      "swedish": "Swedish",
+      "native": "Native",
+      "advanced": "Advanced",
+      "intermediate": "Intermediate",
+      "basic": "Basic"
+    }
+  },
+  "Contact": {
+    "heading": "Contact",
+    "intro": "You can contact me at"
+  },
+  "Skills": {
+    "heading": "My Skills",
+    "languages": "Languages",
+    "libraries": "Libraries and frameworks",
+    "otherTools": "Other tools"
+  },
+  "Experience": {
+    "heading": "My Experience",
+    "technologiesUsed": "Technologies used:",
+    "readMore": "Read more about me ➤",
+    "jobs": [
+      {
+        "title": "Senior Frontend Developer",
+        "period": "Sept 2025 - Present"
+      },
+      {
+        "title": "Web UI Developer",
+        "period": "June 2022 - Sept 2025"
+      },
+      {
+        "title": "Software Developer",
+        "period": "Dec 2021 - June 2022"
+      },
+      {
+        "title": "Frontend Developer",
+        "period": "Oct 2020 - Dec 2021"
+      }
+    ]
+  }
+}

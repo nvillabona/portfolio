@@ -1,27 +1,22 @@
 import Card from "@/components/common/Card/Card";
 import Experience from "@/components/home/experience/Experience";
 import Image from "next/image";
-import React from "react";
+import { getTranslations } from "next-intl/server";
 
-function page() {
+async function page() {
+  const t = await getTranslations("About");
   return (
     <>
       <Card>
         <div className="grid md:grid-cols-2 xs:grid-cols-1">
           <div>
-            <h1 className="text-3xl font-semibold mb-4">About</h1>
+            <h1 className="text-3xl font-semibold mb-4">{t("heading")}</h1>
             <p className="mb-2">
-              I’m <strong>Nicolás Villabona</strong>, a Frontend Developer with
-              over four years of experience. I specialize in React and Vue,
-              creating dynamic, scalable web applications. I’m skilled in HTML,
-              CSS, Sass, and UI libraries like Tailwind and Material UI,
-              ensuring both functionality and aesthetics.
+              {t.rich("bio1", {
+                strong: (chunks) => <strong>{chunks}</strong>,
+              })}
             </p>
-            <p>
-              My background spans e-commerce, internal apps, and web3 projects.
-              I’m always learning, currently focused on TypeScript and
-              microfrontends.I’m driven by innovation and teamwork.
-            </p>
+            <p>{t("bio2")}</p>
           </div>
           <div className="flex justify-center items-center">
             <Image
@@ -36,7 +31,9 @@ function page() {
         </div>
       </Card>
       <Card>
-        <h2 className="text-3xl font-semibold mb-4">Languages I speak</h2>
+        <h2 className="text-3xl font-semibold mb-4">
+          {t("languagesHeading")}
+        </h2>
         <div className="grid md:grid-cols-4 xs:grid-cols-2 place-items-center">
           <div className="flex flex-col items-center justify-center mb-2">
             <Image
@@ -47,8 +44,8 @@ function page() {
               quality={90}
               priority={true}
             />
-            <p>Spanish</p>
-            <p className="text-tom-thumb-400">Native</p>
+            <p>{t("languages.spanish")}</p>
+            <p className="text-tom-thumb-400">{t("languages.native")}</p>
           </div>
           <div className="flex flex-col items-center justify-center mb-2">
             <Image
@@ -59,8 +56,8 @@ function page() {
               quality={90}
               priority={true}
             />
-            <p>English</p>
-            <p className="text-tom-thumb-400">Advanced</p>
+            <p>{t("languages.english")}</p>
+            <p className="text-tom-thumb-400">{t("languages.advanced")}</p>
           </div>
           <div className="flex flex-col items-center justify-center">
             <Image
@@ -71,8 +68,8 @@ function page() {
               quality={90}
               priority={true}
             />
-            <p>French</p>
-            <p className="text-tom-thumb-400">Intermediate</p>
+            <p>{t("languages.french")}</p>
+            <p className="text-tom-thumb-400">{t("languages.intermediate")}</p>
           </div>
           <div className="flex flex-col items-center justify-center">
             <Image
@@ -83,8 +80,8 @@ function page() {
               quality={90}
               priority={true}
             />
-            <p>Swedish</p>
-            <p className="text-tom-thumb-400">Basic</p>
+            <p>{t("languages.swedish")}</p>
+            <p className="text-tom-thumb-400">{t("languages.basic")}</p>
           </div>
         </div>
       </Card>

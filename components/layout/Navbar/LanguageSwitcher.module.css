@@ -1,0 +1,138 @@
+.wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.trigger {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.35rem 0.7rem;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 999px;
+    color: white;
+    cursor: pointer;
+    transition: background-color 200ms cubic-bezier(0.4, 0, 0.2, 1),
+        border-color 200ms cubic-bezier(0.4, 0, 0.2, 1),
+        transform 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.trigger:hover {
+    background: rgba(255, 255, 255, 0.16);
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+.trigger:active {
+    transform: scale(0.96);
+}
+
+.flag {
+    border-radius: 3px;
+    flex-shrink: 0;
+}
+
+.code {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.chevron {
+    width: 0;
+    height: 0;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 5px solid rgba(255, 255, 255, 0.75);
+    transition: transform 220ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.chevronOpen {
+    transform: rotate(180deg);
+}
+
+.dropdown {
+    position: absolute;
+    top: calc(100% + 0.6rem);
+    right: 0;
+    min-width: 176px;
+    margin: 0;
+    padding: 0.4rem;
+    list-style: none;
+    background: linear-gradient(160deg, rgba(24, 38, 29, 0.95), rgba(8, 13, 10, 0.97));
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 14px;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    transform-origin: top right;
+    animation: dropdownIn 200ms cubic-bezier(0.16, 1, 0.3, 1) both;
+    z-index: 200;
+}
+
+@keyframes dropdownIn {
+    from {
+        opacity: 0;
+        transform: scale(0.92) translateY(-6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.item {
+    opacity: 0;
+    animation: itemIn 260ms ease both;
+}
+
+@keyframes itemIn {
+    from {
+        opacity: 0;
+        transform: translateX(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.option {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap: 0.6rem;
+    padding: 0.5rem 0.6rem;
+    background: transparent;
+    border: none;
+    border-radius: 9px;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.85rem;
+    text-align: left;
+    cursor: pointer;
+    transition: background-color 150ms ease, color 150ms ease;
+}
+
+.option:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: white;
+}
+
+.optionActive {
+    background: rgba(159, 186, 162, 0.18);
+    color: white;
+    font-weight: 600;
+}
+
+.stamp {
+    margin-left: auto;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #9bbaa2;
+    box-shadow: 0 0 6px rgba(159, 186, 162, 0.9);
+}

@@ -1,9 +1,7 @@
 export const experiences = [
         {
-        title: "Senior Frontend Developer",
         company: "Perficient",
         companyUrl: "https://www.perficient.com/",
-        period: "Sept 2025 - Present",
         technologies: [
             {
                 name: "JavaScript",
@@ -24,10 +22,8 @@ export const experiences = [
         ],
     },
     {
-        title: "Web UI Developer",
         company: "Globant",
         companyUrl: "https://www.globant.com/",
-        period: "June 2022 - Sept 2025",
         technologies: [
             {
                 name: "JavaScript",
@@ -56,9 +52,7 @@ export const experiences = [
         ],
     },
     {
-        title: "Software Developer",
         company: "Freelance",
-        period: "Dec 2021 - June 2022",
         technologies: [
             {
                 name: "JavaScript",
@@ -83,9 +77,7 @@ export const experiences = [
         ],
     },
     {
-        title: "Frontend Developer",
         company: "Waco Services",
-        period: "Oct 2020 - Dec 2021",
         technologies: [
             {
                 name: "JavaScript",

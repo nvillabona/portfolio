@@ -1,0 +1,64 @@
+{
+  "Metadata": {
+    "title": "Nicolás Villabona",
+    "description": "Nicolás Villabona Développeur Frontend"
+  },
+  "Navbar": {
+    "home": "Accueil",
+    "about": "À propos de moi",
+    "contact": "Contact",
+    "language": "Langue"
+  },
+  "Home": {
+    "role": "Ingénieur logiciel originaire de Cali, Colombie."
+  },
+  "About": {
+    "heading": "À propos",
+    "bio1": "Je suis <strong>Nicolás Villabona</strong>, développeur Frontend avec plus de quatre ans d'expérience. Je me spécialise en React et Vue, créant des applications web dynamiques et évolutives. Je maîtrise HTML, CSS, Sass et des bibliothèques UI comme Tailwind et Material UI, garantissant à la fois fonctionnalité et esthétique.",
+    "bio2": "Mon parcours couvre l'e-commerce, les applications internes et les projets web3. J'apprends constamment, actuellement concentré sur TypeScript et les microfrontends. Je suis motivé par l'innovation et le travail d'équipe.",
+    "languagesHeading": "Langues que je parle",
+    "languages": {
+      "spanish": "Espagnol",
+      "english": "Anglais",
+      "french": "Français",
+      "swedish": "Suédois",
+      "native": "Langue maternelle",
+      "advanced": "Avancé",
+      "intermediate": "Intermédiaire",
+      "basic": "Débutant"
+    }
+  },
+  "Contact": {
+    "heading": "Contact",
+    "intro": "Vous pouvez me contacter sur"
+  },
+  "Skills": {
+    "heading": "Mes Compétences",
+    "languages": "Langages",
+    "libraries": "Librairies et frameworks",
+    "otherTools": "Autres outils"
+  },
+  "Experience": {
+    "heading": "Mon Expérience",
+    "technologiesUsed": "Technologies utilisées :",
+    "readMore": "En savoir plus sur moi ➤",
+    "jobs": [
+      {
+        "title": "Développeur Frontend Senior",
+        "period": "Sept 2025 - Présent"
+      },
+      {
+        "title": "Développeur Web UI",
+        "period": "Juin 2022 - Sept 2025"
+      },
+      {
+        "title": "Développeur Logiciel",
+        "period": "Déc 2021 - Juin 2022"
+      },
+      {
+        "title": "Développeur Frontend",
+        "period": "Oct 2020 - Déc 2021"
+      }
+    ]
+  }
+}

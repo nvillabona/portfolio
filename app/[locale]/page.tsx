@@ -1,11 +1,13 @@
 import Image from "next/image";
+import { getTranslations } from "next-intl/server";
 import styles from "./page.module.css";
 import Card from "@/components/common/Card/Card";
 import Skills from "@/components/home/skills/Skills";
 import Experience from "@/components/home/experience/Experience";
 import Social from "@/components/common/Social/Social";
 
-export default function Home() {
+export default async function Home() {
+  const t = await getTranslations("Home");
   return (
     <>
       <Card>
@@ -13,17 +15,15 @@ export default function Home() {
           <div>
             <h1
               className={`
-                sm:text-5xl xs:text-3xl 
-                font-semibold 
-                mb-4 
+                sm:text-5xl xs:text-3xl
+                font-semibold
+                mb-4
                 xs:max-w-72 sm:max-w-md
                 ${styles.typewriter}`}
             >
               Nicolás Villabona
             </h1>
-            <p className="text-2xl font-normal">
-              Sofware engineer from Cali, Colombia.
-            </p>
+            <p className="text-2xl font-normal">{t("role")}</p>
           </div>
           <div className="flex justify-center">
             <Image
