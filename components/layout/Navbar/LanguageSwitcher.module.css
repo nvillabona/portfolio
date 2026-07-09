@@ -53,6 +53,17 @@
     transform: rotate(180deg);
 }
 
+@media (max-width: 539px) {
+    .trigger {
+        gap: 0.2rem;
+        padding: 0.25rem 0.45rem;
+    }
+
+    .code {
+        font-size: 0.65rem;
+    }
+}
+
 .dropdown {
     position: absolute;
     top: calc(100% + 0.6rem);

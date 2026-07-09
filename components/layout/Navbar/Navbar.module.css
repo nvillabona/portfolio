@@ -32,6 +32,7 @@
 .navLinks>a {
     padding: 0.5em 1em;
     text-align: center;
+    white-space: nowrap;
 }
 
 .navLinks>a:hover {
@@ -43,6 +44,10 @@
 }
 
 @media (max-width: 539px) {
+    .navContainer {
+        gap: 0.25rem;
+    }
+
     .navSpacer {
         display: none;
     }
@@ -52,7 +57,12 @@
         justify-content: flex-start;
     }
 
+    .navActions {
+        flex: 0 0 auto;
+    }
+
     .navLinks>a {
-        padding: 0.5em 0.6em;
+        padding: 0.4em 0.2em;
+        font-size: 0.82rem;
     }
 }
