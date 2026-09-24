@@ -4,24 +4,25 @@ import { useLocale, useTranslations } from 'next-intl'
 import { useEffect, useRef, useState } from 'react'
 import { usePathname, useRouter } from '@/i18n/navigation'
 import { routing } from '@/i18n/routing'
+import { flags } from '@/lib/icons'
 import styles from './LanguageSwitcher.module.css'
 
 const LOCALE_META: Record<string, { name: string; flag: string }> = {
     en: {
         name: 'English',
-        flag: 'https://img.icons8.com/?size=100&id=15532&format=png&color=000000',
+        flag: flags.usa,
     },
     es: {
         name: 'Español',
-        flag: 'https://img.icons8.com/?size=100&id=15495&format=png&color=000000',
+        flag: flags.colombia,
     },
     fr: {
         name: 'Français',
-        flag: 'https://img.icons8.com/?size=100&id=15497&format=png&color=000000',
+        flag: flags.france,
     },
     sv: {
         name: 'Svenska',
-        flag: 'https://img.icons8.com/?size=100&id=15527&format=png&color=000000',
+        flag: flags.sweden,
     },
 }
 
@@ -71,7 +72,6 @@ function LanguageSwitcher() {
                 type="button"
                 className={styles.trigger}
                 onClick={() => setOpen((value) => !value)}
-                aria-haspopup="listbox"
                 aria-expanded={open}
                 aria-label={t('language')}
             >
@@ -90,7 +90,7 @@ function LanguageSwitcher() {
             </button>
 
             {open && (
-                <ul className={styles.dropdown} role="listbox">
+                <ul className={styles.dropdown}>
                     {routing.locales.map((loc, index) => (
                         <li
                             key={loc}
@@ -99,8 +99,8 @@ function LanguageSwitcher() {
                         >
                             <button
                                 type="button"
-                                role="option"
-                                aria-selected={loc === locale}
+                                aria-current={loc === locale ? 'true' : undefined}
+                                lang={loc}
                                 className={`${styles.option} ${loc === locale ? styles.optionActive : ''
                                     }`}
                                 onClick={() => selectLocale(loc)}
