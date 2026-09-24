@@ -60,5 +60,10 @@
         "period": "Oct 2020 - Dic 2021"
       }
     }
+  },
+  "NotFound": {
+    "title": "Página no encontrada",
+    "description": "La página que buscas no existe o fue movida.",
+    "backHome": "Volver al inicio"
   }
 }

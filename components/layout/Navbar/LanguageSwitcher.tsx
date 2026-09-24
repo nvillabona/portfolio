@@ -1,7 +1,7 @@
 'use client'
 import Image from 'next/image'
 import { useLocale, useTranslations } from 'next-intl'
-import { useEffect, useRef, useState } from 'react'
+import { type KeyboardEvent as ReactKeyboardEvent, useEffect, useRef, useState } from 'react'
 import { usePathname, useRouter } from '@/i18n/navigation'
 import { routing } from '@/i18n/routing'
 import { flags } from '@/lib/icons'
@@ -33,6 +33,8 @@ function LanguageSwitcher() {
     const t = useTranslations('Navbar')
     const [open, setOpen] = useState(false)
     const wrapperRef = useRef<HTMLDivElement>(null)
+    const triggerRef = useRef<HTMLButtonElement>(null)
+    const optionRefs = useRef<(HTMLButtonElement | null)[]>([])
 
     useEffect(() => {
         if (!open) return
@@ -46,7 +48,10 @@ function LanguageSwitcher() {
             }
         }
         function handleKeyDown(event: KeyboardEvent) {
-            if (event.key === 'Escape') setOpen(false)
+            if (event.key === 'Escape') {
+                setOpen(false)
+                triggerRef.current?.focus()
+            }
         }
 
         document.addEventListener('mousedown', handlePointerDown)
@@ -57,8 +62,31 @@ function LanguageSwitcher() {
         }
     }, [open])
 
+    // Move focus into the menu when it opens, starting on the current language
+    useEffect(() => {
+        if (!open) return
+        const activeIndex = routing.locales.indexOf(locale as (typeof routing.locales)[number])
+        optionRefs.current[Math.max(activeIndex, 0)]?.focus()
+    }, [open, locale])
+
+    function handleMenuKeyDown(event: ReactKeyboardEvent<HTMLUListElement>) {
+        const options = optionRefs.current.filter(Boolean) as HTMLButtonElement[]
+        const index = options.indexOf(document.activeElement as HTMLButtonElement)
+        let next: number | null = null
+        if (event.key === 'ArrowDown') next = (index + 1) % options.length
+        else if (event.key === 'ArrowUp') next = (index - 1 + options.length) % options.length
+        else if (event.key === 'Home') next = 0
+        else if (event.key === 'End') next = options.length - 1
+        else if (event.key === 'Tab') setOpen(false)
+        if (next !== null) {
+            event.preventDefault()
+            options[next].focus()
+        }
+    }
+
     function selectLocale(nextLocale: string) {
         setOpen(false)
+        triggerRef.current?.focus()
         if (nextLocale !== locale) {
             router.replace(pathname, { locale: nextLocale })
         }
@@ -69,6 +97,7 @@ function LanguageSwitcher() {
     return (
         <div className={styles.wrapper} ref={wrapperRef}>
             <button
+                ref={triggerRef}
                 type="button"
                 className={styles.trigger}
                 onClick={() => setOpen((value) => !value)}
@@ -90,7 +119,7 @@ function LanguageSwitcher() {
             </button>
 
             {open && (
-                <ul className={styles.dropdown}>
+                <ul className={styles.dropdown} onKeyDown={handleMenuKeyDown}>
                     {routing.locales.map((loc, index) => (
                         <li
                             key={loc}
@@ -98,6 +127,9 @@ function LanguageSwitcher() {
                             style={{ animationDelay: `${index * 35}ms` }}
                         >
                             <button
+                                ref={(el) => {
+                                    optionRefs.current[index] = el
+                                }}
                                 type="button"
                                 aria-current={loc === locale ? 'true' : undefined}
                                 lang={loc}

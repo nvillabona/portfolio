@@ -128,7 +128,8 @@
     transition: background-color 150ms ease, color 150ms ease;
 }
 
-.option:hover {
+.option:hover,
+.option:focus-visible {
     background: rgba(255, 255, 255, 0.08);
     color: white;
 }
@@ -146,4 +147,11 @@
     border-radius: 50%;
     background: #9bbaa2;
     box-shadow: 0 0 6px rgba(159, 186, 162, 0.9);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .dropdown,
+    .item {
+        animation: none;
+    }
 }

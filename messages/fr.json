@@ -60,5 +60,10 @@
         "period": "Oct 2020 - Déc 2021"
       }
     }
+  },
+  "NotFound": {
+    "title": "Page introuvable",
+    "description": "La page que vous cherchez n’existe pas ou a été déplacée.",
+    "backHome": "Retour à l’accueil"
   }
 }
