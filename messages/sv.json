@@ -42,23 +42,23 @@
     "heading": "Min Erfarenhet",
     "technologiesUsed": "Använda teknologier:",
     "readMore": "Läs mer om mig ➤",
-    "jobs": [
-      {
+    "jobs": {
+      "perficient": {
         "title": "Senior Frontend-utvecklare",
         "period": "Sept 2025 - Nutid"
       },
-      {
+      "globant": {
         "title": "Webb UI-utvecklare",
         "period": "Juni 2022 - Sept 2025"
       },
-      {
+      "freelance": {
         "title": "Mjukvaruutvecklare",
         "period": "Dec 2021 - Juni 2022"
       },
-      {
+      "waco": {
         "title": "Frontend-utvecklare",
         "period": "Okt 2020 - Dec 2021"
       }
-    ]
+    }
   }
 }

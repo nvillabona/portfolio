@@ -8,7 +8,7 @@ interface CardProps {
 }
 
 function Card({ children, className }: CardProps) {
-    return <section className={`${styles.card} ${className} p-5`}>
+    return <section className={`${styles.card} ${className ?? ""} p-5`}>
         {children}
     </section>;
 }

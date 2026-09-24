@@ -2,11 +2,7 @@ import React from "react";
 import { useTranslations } from "next-intl";
 import { libraries, languages, otherTools } from "./constants";
 import Image from "next/image";
-
-interface Skill {
-  name: string;
-  icon: string;
-}
+import type { Tech as Skill } from "@/lib/icons";
 
 function Skills() {
   const t = useTranslations("Skills");

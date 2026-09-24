@@ -1,9 +1,28 @@
+import type { Metadata } from "next";
 import Card from "@/components/common/Card/Card";
 import Experience from "@/components/home/experience/Experience";
 import Image from "next/image";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
+import { flags } from "@/lib/icons";
 
-async function page() {
+type Props = { params: Promise<{ locale: string }> };
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "Navbar" });
+  return { title: t("about") };
+}
+
+const spokenLanguages = [
+  { key: "spanish", level: "native", flag: flags.colombia, country: "Colombia" },
+  { key: "english", level: "advanced", flag: flags.usa, country: "USA" },
+  { key: "french", level: "intermediate", flag: flags.france, country: "France" },
+  { key: "swedish", level: "basic", flag: flags.sweden, country: "Sweden" },
+] as const;
+
+async function page({ params }: Props) {
+  const { locale } = await params;
+  setRequestLocale(locale);
   const t = await getTranslations("About");
   return (
     <>
@@ -23,7 +42,7 @@ async function page() {
               src="/me.webp"
               width={300}
               height={300}
-              alt="me"
+              alt="Nicolás Villabona"
               quality={90}
               priority={true}
             />
@@ -35,58 +54,28 @@ async function page() {
           {t("languagesHeading")}
         </h2>
         <div className="grid md:grid-cols-4 xs:grid-cols-2 place-items-center">
-          <div className="flex flex-col items-center justify-center mb-2">
-            <Image
-              src="https://img.icons8.com/?size=100&id=15495&format=png&color=000000"
-              width={50}
-              height={50}
-              alt="Colombia"
-              quality={90}
-              priority={true}
-            />
-            <p>{t("languages.spanish")}</p>
-            <p className="text-tom-thumb-400">{t("languages.native")}</p>
-          </div>
-          <div className="flex flex-col items-center justify-center mb-2">
-            <Image
-              src="https://img.icons8.com/?size=100&id=15532&format=png&color=000000"
-              width={50}
-              height={50}
-              alt="Usa"
-              quality={90}
-              priority={true}
-            />
-            <p>{t("languages.english")}</p>
-            <p className="text-tom-thumb-400">{t("languages.advanced")}</p>
-          </div>
-          <div className="flex flex-col items-center justify-center">
-            <Image
-              src="https://img.icons8.com/?size=100&id=15497&format=png&color=000000"
-              width={50}
-              height={50}
-              alt="France"
-              quality={90}
-              priority={true}
-            />
-            <p>{t("languages.french")}</p>
-            <p className="text-tom-thumb-400">{t("languages.intermediate")}</p>
-          </div>
-          <div className="flex flex-col items-center justify-center">
-            <Image
-              src="https://img.icons8.com/?size=100&id=15527&format=png&color=000000"
-              width={50}
-              height={50}
-              alt="Sweden"
-              quality={90}
-              priority={true}
-            />
-            <p>{t("languages.swedish")}</p>
-            <p className="text-tom-thumb-400">{t("languages.basic")}</p>
-          </div>
+          {spokenLanguages.map((language) => (
+            <div
+              key={language.key}
+              className="flex flex-col items-center justify-center mb-2"
+            >
+              <Image
+                src={language.flag}
+                width={50}
+                height={50}
+                alt={language.country}
+                quality={90}
+              />
+              <p>{t(`languages.${language.key}`)}</p>
+              <p className="text-tom-thumb-300">
+                {t(`languages.${language.level}`)}
+              </p>
+            </div>
+          ))}
         </div>
       </Card>
       <Card className="mb-5">
-        <Experience />
+        <Experience showDetails />
       </Card>
     </>
   );

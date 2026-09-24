@@ -1,37 +1,37 @@
-"use client";
 import Image from "next/image";
 import React from "react";
+import { socialIcons } from "@/lib/icons";
 
 const socialNetworks = [
   {
     name: "LinkedIn",
     url: "https://www.linkedin.com/in/nvillabona/",
-    icon: "https://img.icons8.com/?size=100&id=8808&format=png&color=FFFFFF",
+    icon: socialIcons.linkedin,
   },
   {
     name: "Github",
     url: "https://github.com/nvillabona/",
-    icon: "https://img.icons8.com/?size=100&id=3tC9EQumUAuq&format=png&color=FFFFFF",
+    icon: socialIcons.github,
   },
   {
     name: "GitLab",
     url: "https://gitlab.com/nvillabona/",
-    icon: "https://img.icons8.com/?size=100&id=41316&format=png&color=FFFFFF",
+    icon: socialIcons.gitlab,
   },
   {
     name: "BlueSky",
     url: "https://bsky.app/profile/nvillabona.bsky.social",
-    icon: "https://img.icons8.com/?size=100&id=9229&format=png&color=FFFFFF"
+    icon: socialIcons.bluesky
   },
   {
     name: "Twitter",
     url: "https://twitter.com/n_villabona/",
-    icon: "https://img.icons8.com/?size=100&id=phOKFKYpe00C&format=png&color=FFFFFF",
+    icon: socialIcons.twitter,
   },
   {
     name: "Duolingo",
     url: "https://www.duolingo.com/profile/nvillabona",
-    icon: "https://img.icons8.com/?size=100&id=MDx6xPlDLmZR&format=png&color=FFFFFF",
+    icon: socialIcons.duolingo,
   },
 ];
 
@@ -44,11 +44,12 @@ function Social() {
           className="bg-tom-thumb-500 md:mx-4  p-2 rounded-3xl mt-4 w-10 hover:bg-tom-thumb-300"
           href={network.url}
           target="_blank"
-          rel="noreferrer"
+          rel="noopener noreferrer"
+          aria-label={network.name}
         >
           <Image
             src={network.icon}
-            alt={network.name}
+            alt=""
             height={25}
             width={25}
             title={network.name}

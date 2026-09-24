@@ -1,36 +1,36 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Nicolás Villabona — Portfolio
 
-## Getting Started
+Personal portfolio site built with [Next.js](https://nextjs.org/) (App Router), [Tailwind CSS](https://tailwindcss.com/) and [next-intl](https://next-intl.dev/).
 
-First, run the development server:
+The site is available in English, Spanish, French and Swedish. English is served without a URL prefix; other languages live under `/es`, `/fr` and `/sv`.
+
+## Getting started
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- `npm run dev` – start the development server
+- `npm run build` – create a production build
+- `npm run start` – serve the production build
+- `npm run lint` – run ESLint
 
-## Learn More
+## Project structure
 
-To learn more about Next.js, take a look at the following resources:
+- `app/[locale]/` – pages (home, about, contact) and the root layout
+- `components/` – UI components (layout, cards, skills, experience, social links)
+- `lib/icons.ts` – shared icon URLs for technologies, flags and social networks
+- `messages/` – translation files, one per locale
+- `i18n/` – next-intl routing, navigation and request config
+- `proxy.ts` – locale detection and redirects
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Adding a translation
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+1. Add the locale to `i18n/routing.ts`.
+2. Create `messages/<locale>.json` with the same keys as `messages/en.json`.
+3. Add its name and flag to `LOCALE_META` in `components/layout/Navbar/LanguageSwitcher.tsx`.

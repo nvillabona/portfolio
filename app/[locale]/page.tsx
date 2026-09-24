@@ -1,12 +1,18 @@
 import Image from "next/image";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import styles from "./page.module.css";
 import Card from "@/components/common/Card/Card";
 import Skills from "@/components/home/skills/Skills";
 import Experience from "@/components/home/experience/Experience";
 import Social from "@/components/common/Social/Social";
 
-export default async function Home() {
+export default async function Home({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
   const t = await getTranslations("Home");
   return (
     <>
@@ -30,7 +36,7 @@ export default async function Home() {
               src="/memoji.webp"
               width={300}
               height={300}
-              alt="me"
+              alt="Nicolás Villabona memoji"
               quality={90}
               priority={true}
             />

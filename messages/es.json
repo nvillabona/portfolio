@@ -42,23 +42,23 @@
     "heading": "Mi Experiencia",
     "technologiesUsed": "Tecnologías utilizadas:",
     "readMore": "Lee más sobre mí ➤",
-    "jobs": [
-      {
+    "jobs": {
+      "perficient": {
         "title": "Desarrollador Frontend Senior",
         "period": "Sept 2025 - Presente"
       },
-      {
+      "globant": {
         "title": "Desarrollador Web UI",
         "period": "Jun 2022 - Sept 2025"
       },
-      {
+      "freelance": {
         "title": "Desarrollador de Software",
         "period": "Dic 2021 - Jun 2022"
       },
-      {
+      "waco": {
         "title": "Desarrollador Frontend",
         "period": "Oct 2020 - Dic 2021"
       }
-    ]
+    }
   }
 }
