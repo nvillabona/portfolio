@@ -60,5 +60,10 @@
         "period": "Oct 2020 - Dec 2021"
       }
     }
+  },
+  "NotFound": {
+    "title": "Page not found",
+    "description": "The page you are looking for does not exist or has been moved.",
+    "backHome": "Back to home"
   }
 }

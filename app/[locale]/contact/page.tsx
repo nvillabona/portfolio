@@ -3,13 +3,14 @@ import Card from "@/components/common/Card/Card";
 import Social from "@/components/common/Social/Social";
 import Image from "next/image";
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { alternatesFor } from "@/lib/site";
 
 type Props = { params: Promise<{ locale: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const { locale } = await params;
     const t = await getTranslations({ locale, namespace: "Navbar" });
-    return { title: t("contact") };
+    return { title: t("contact"), alternates: alternatesFor(locale, "/contact") };
 }
 
 async function page({ params }: Props) {

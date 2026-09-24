@@ -6,6 +6,7 @@ import { notFound } from "next/navigation";
 import "../globals.css";
 import { Navbar } from "@/components/layout/Navbar";
 import { routing } from "@/i18n/routing";
+import { OG_LOCALES, SITE_URL } from "@/lib/site";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -20,11 +21,23 @@ export async function generateMetadata({
   const t = await getTranslations({ locale, namespace: "Metadata" });
 
   return {
+    metadataBase: new URL(SITE_URL),
     title: {
       default: t("title"),
       template: `%s | ${t("title")}`,
     },
     description: t("description"),
+    openGraph: {
+      type: "website",
+      siteName: t("title"),
+      title: t("title"),
+      description: t("description"),
+      locale: OG_LOCALES[locale],
+    },
+    twitter: {
+      card: "summary_large_image",
+      creator: "@n_villabona",
+    },
     icons: {
       icon: "/favicon.ico",
       shortcut: "/favicon.ico",
