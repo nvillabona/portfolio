@@ -8,8 +8,9 @@
     /* Gives that scrolling effect as the typing happens */
 
     /* Adjust as needed */
-    animation: typing 3s steps(40, end),
-        blink-caret .75s step-end infinite;
+    /* One step per character of the name; the caret blinks a few times, then hides */
+    animation: typing 2s steps(17, end) both,
+        blink-caret .75s step-end 6 forwards;
 }
 
 /* The typing effect */

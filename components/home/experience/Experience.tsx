@@ -27,7 +27,7 @@ function Experience({ showDetails = false }: ExperienceProps) {
               </h3>
               {experience.companyUrl ? (
                 <a
-                  className="text-tom-thumb-400 text-xl font-normal"
+                  className="text-tom-thumb-200 text-xl font-normal"
                   href={experience.companyUrl}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -35,7 +35,7 @@ function Experience({ showDetails = false }: ExperienceProps) {
                   {experience.company}
                 </a>
               ) : (
-                <p className="text-tom-thumb-400 text-xl font-normal">
+                <p className="text-tom-thumb-200 text-xl font-normal">
                   {experience.company}
                 </p>
               )}

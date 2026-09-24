@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import styles from "./page.module.css";
@@ -5,6 +6,16 @@ import Card from "@/components/common/Card/Card";
 import Skills from "@/components/home/skills/Skills";
 import Experience from "@/components/home/experience/Experience";
 import Social from "@/components/common/Social/Social";
+import { alternatesFor } from "@/lib/site";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  return { alternates: alternatesFor(locale, "") };
+}
 
 export default async function Home({
   params,

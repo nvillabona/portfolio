@@ -3,6 +3,7 @@ import Card from "@/components/common/Card/Card";
 import Experience from "@/components/home/experience/Experience";
 import Image from "next/image";
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { alternatesFor } from "@/lib/site";
 import { flags } from "@/lib/icons";
 
 type Props = { params: Promise<{ locale: string }> };
@@ -10,7 +11,7 @@ type Props = { params: Promise<{ locale: string }> };
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "Navbar" });
-  return { title: t("about") };
+  return { title: t("about"), alternates: alternatesFor(locale, "/about") };
 }
 
 const spokenLanguages = [
@@ -67,7 +68,7 @@ async function page({ params }: Props) {
                 quality={90}
               />
               <p>{t(`languages.${language.key}`)}</p>
-              <p className="text-tom-thumb-300">
+              <p className="text-tom-thumb-200">
                 {t(`languages.${language.level}`)}
               </p>
             </div>
