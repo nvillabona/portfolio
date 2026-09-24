@@ -33,7 +33,7 @@ export async function generateMetadata({
 }
 
 const atkinson = Atkinson_Hyperlegible({
-  weight: "400",
+  weight: ["400", "700"],
   subsets: ["latin"],
   variable: "--font-atkinson",
 });
@@ -50,13 +50,20 @@ export default async function RootLayout({
     notFound();
   }
   setRequestLocale(locale);
+  const t = await getTranslations({ locale, namespace: "Navbar" });
 
   return (
     <html lang={locale}>
       <body className={atkinson.className}>
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[1000] focus:rounded-lg focus:bg-tom-thumb-500 focus:px-4 focus:py-2"
+        >
+          {t("skipToContent")}
+        </a>
         <NextIntlClientProvider>
           <Navbar />
-          <main className="flex min-h-screen flex-col items-center gap-4 md:px-10 lg:px-24 xl:px-60 xs:px-4 pt-20">
+          <main id="main-content" tabIndex={-1} className="flex min-h-screen flex-col items-center gap-4 md:px-10 lg:px-24 xl:px-60 xs:px-4 pt-20">
             {children}
           </main>
         </NextIntlClientProvider>

@@ -1,13 +1,14 @@
 {
   "Metadata": {
     "title": "Nicolás Villabona",
-    "description": "Nicolás Villabona Frontend-utvecklare"
+    "description": "Portfolio för Nicolás Villabona, senior frontend-utvecklare från Cali, Colombia, specialiserad på React, Vue och TypeScript. Se mina färdigheter, min erfarenhet och hur du kontaktar mig."
   },
   "Navbar": {
     "home": "Hem",
     "about": "Om mig",
     "contact": "Kontakt",
-    "language": "Språk"
+    "language": "Språk",
+    "skipToContent": "Hoppa till innehållet"
   },
   "Home": {
     "role": "Mjukvaruingenjör från Cali, Colombia."
