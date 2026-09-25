@@ -10,7 +10,8 @@
     "language": "Langue"
   },
   "Home": {
-    "role": "Ingénieur logiciel originaire de Cali, Colombie."
+    "role": "Ingénieur logiciel originaire de Cali, Colombie.",
+    "memojiHint": "Faites glisser pour pivoter"
   },
   "About": {
     "heading": "À propos",

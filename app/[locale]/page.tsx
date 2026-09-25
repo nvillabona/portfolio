@@ -1,10 +1,10 @@
-import Image from "next/image";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import styles from "./page.module.css";
 import Card from "@/components/common/Card/Card";
 import Skills from "@/components/home/skills/Skills";
 import Experience from "@/components/home/experience/Experience";
 import Social from "@/components/common/Social/Social";
+import Memoji3D from "@/components/home/memoji/Memoji3D";
 
 export default async function Home({
   params,
@@ -32,14 +32,7 @@ export default async function Home({
             <p className="text-2xl font-normal">{t("role")}</p>
           </div>
           <div className="flex justify-center">
-            <Image
-              src="/memoji.webp"
-              width={300}
-              height={300}
-              alt="Nicolás Villabona memoji"
-              quality={90}
-              priority={true}
-            />
+            <Memoji3D alt="Nicolás Villabona memoji" hint={t("memojiHint")} />
           </div>
         </div>
       </Card>

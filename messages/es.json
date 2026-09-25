@@ -10,7 +10,8 @@
     "language": "Idioma"
   },
   "Home": {
-    "role": "Ingeniero de software de Cali, Colombia."
+    "role": "Ingeniero de software de Cali, Colombia.",
+    "memojiHint": "Arrastra para girar"
   },
   "About": {
     "heading": "Sobre mí",
