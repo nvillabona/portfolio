@@ -2,13 +2,9 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { buildBackTexture, buildRelief, RIM } from "./relief";
 
 const SIZE = 300;
-const SRC = "/memoji.webp";
-// Resolution of the relief mesh (vertices per side).
-const GRID = 208;
-const RIM_LAYERS = 10;
+const SRC = "/memoji-3d.webp";
 const MAX_TILT = 0.45;
 
 function supportsWebGL() {
@@ -18,15 +14,6 @@ function supportsWebGL() {
   } catch {
     return false;
   }
-}
-
-function loadImage(src: string) {
-  return new Promise<HTMLImageElement>((resolve, reject) => {
-    const img = new window.Image();
-    img.onload = () => resolve(img);
-    img.onerror = reject;
-    img.src = src;
-  });
 }
 
 export default function Memoji3D({ alt, hint }: { alt: string; hint: string }) {
@@ -52,7 +39,10 @@ export default function Memoji3D({ alt, hint }: { alt: string; hint: string }) {
     lazyObserver.observe(mount);
 
     async function init() {
-      const [THREE, img] = await Promise.all([import("three"), loadImage(SRC)]);
+      const [THREE, { buildHead, disposeHead }] = await Promise.all([
+        import("three"),
+        import("./head"),
+      ]);
       if (disposed || !mount) return;
 
       const reducedMotion = window.matchMedia(
@@ -63,6 +53,7 @@ export default function Memoji3D({ alt, hint }: { alt: string; hint: string }) {
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
       renderer.setSize(mount.clientWidth, mount.clientHeight);
       renderer.outputColorSpace = THREE.SRGBColorSpace;
+      renderer.toneMapping = THREE.ACESFilmicToneMapping;
       const canvas = renderer.domElement;
       canvas.setAttribute("aria-hidden", "true");
       canvas.className = "absolute inset-0 h-full w-full";
@@ -70,71 +61,26 @@ export default function Memoji3D({ alt, hint }: { alt: string; hint: string }) {
       canvas.style.touchAction = "pan-y";
 
       const scene = new THREE.Scene();
-      const camera = new THREE.PerspectiveCamera(35, 1, 0.1, 100);
-      camera.position.set(0, 0, 3.6);
+      const camera = new THREE.PerspectiveCamera(30, 1, 0.1, 100);
+      camera.position.set(0, 0.05, 6.2);
 
-      scene.add(new THREE.HemisphereLight(0xffffff, 0x8a7a70, 1.6));
-      const key = new THREE.DirectionalLight(0xffffff, 1.9);
-      key.position.set(-1.5, 2, 3);
+      // Soft studio lighting: a warm key from the upper left, a fill from
+      // the right and a rim light behind to separate the hair.
+      scene.add(new THREE.HemisphereLight(0xffffff, 0xb8a79a, 1.2));
+      const key = new THREE.DirectionalLight(0xfff4ea, 2.4);
+      key.position.set(-2.5, 3, 4);
       scene.add(key);
-      const rim = new THREE.DirectionalLight(0xffffff, 0.8);
-      rim.position.set(2, 0.5, -2);
+      const fill = new THREE.DirectionalLight(0xffffff, 0.9);
+      fill.position.set(3, 0.5, 2.5);
+      scene.add(fill);
+      const rim = new THREE.DirectionalLight(0xffffff, 1.4);
+      rim.position.set(0, 2.5, -4);
       scene.add(rim);
 
-      const texture = new THREE.Texture(img);
-      texture.colorSpace = THREE.SRGBColorSpace;
-      texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
-      texture.needsUpdate = true;
-
-      // Relief meshes sculpted from the memoji's features; the back is
-      // mirrored so the memoji is a closed volume.
-      const relief = buildRelief(img, GRID);
-      const makeSurface = (height: Float32Array) => {
-        const surface = new THREE.PlaneGeometry(2, 2, GRID - 1, GRID - 1);
-        const pos = surface.attributes.position;
-        for (let i = 0; i < pos.count; i++) pos.setZ(i, height[i]);
-        surface.computeVertexNormals();
-        return surface;
-      };
-      const geometry = makeSurface(relief.front);
-      const backGeometry = makeSurface(relief.back);
-      const backTexture = new THREE.CanvasTexture(buildBackTexture(img));
-      backTexture.colorSpace = THREE.SRGBColorSpace;
-
-      const frontMaterial = new THREE.MeshStandardMaterial({
-        map: texture,
-        alphaTest: 0.5,
-        roughness: 0.55,
-        metalness: 0,
-      });
-      const backMaterial = new THREE.MeshStandardMaterial({
-        map: backTexture,
-        alphaTest: 0.5,
-        roughness: 0.65,
-        metalness: 0,
-        color: 0xd8d2cc,
-      });
       const memoji = new THREE.Group();
-      memoji.add(new THREE.Mesh(geometry, frontMaterial));
-      const back = new THREE.Mesh(backGeometry, backMaterial);
-      // three.js flips the winding for negatively scaled meshes itself.
-      back.scale.z = -1;
-      memoji.add(back);
-
-      // Close the side wall between front and back with stacked cut-outs.
-      const rimGeometry = new THREE.PlaneGeometry(2, 2);
-      const rimMaterial = new THREE.MeshStandardMaterial({
-        map: texture,
-        alphaTest: 0.5,
-        side: THREE.DoubleSide,
-        roughness: 0.8,
-        color: 0x8f8580,
-      });
-      for (let i = 0; i < RIM_LAYERS; i++) {
-        const layer = new THREE.Mesh(rimGeometry, rimMaterial);
-        layer.position.z = -RIM + (2 * RIM * (i + 0.5)) / RIM_LAYERS;
-        memoji.add(layer);
-      }
+      const head = buildHead();
+      head.position.y = 0.12;
+      memoji.add(head);
       scene.add(memoji);
 
       mount.appendChild(canvas);
@@ -228,14 +174,7 @@ export default function Memoji3D({ alt, hint }: { alt: string; hint: string }) {
         canvas.removeEventListener("pointermove", onPointerMove);
         canvas.removeEventListener("pointerup", onPointerUp);
         canvas.removeEventListener("pointercancel", onPointerUp);
-        geometry.dispose();
-        backGeometry.dispose();
-        backTexture.dispose();
-        rimGeometry.dispose();
-        rimMaterial.dispose();
-        frontMaterial.dispose();
-        backMaterial.dispose();
-        texture.dispose();
+        disposeHead(head);
         renderer.dispose();
         canvas.remove();
       };
