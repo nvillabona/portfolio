@@ -4,12 +4,15 @@
  * The image is flat, so depth is modelled part by part from the memoji's
  * anatomy (all coordinates are pixels in the source image):
  *
- * - Head: an ellipsoid centred on the face (215, 215), ~216 px wide. Real
- *   heads are about as deep as they are wide, so it bulges the most.
- * - Hair: a slightly larger cap over the top of the head.
- * - Ears: small flattened ellipsoids at the sides, sitting behind the face.
- * - Face: nose, cheeks, brow ridge, eye sockets with eyeballs, a recessed
- *   open mouth and the chin, placed where they are drawn.
+ * - Head: centred on the face (215, 218), ~216 px wide and about as deep,
+ *   with a broad, flat face that curves back steeply at the cheeks. The
+ *   ears sit halfway back, so the skull extends further behind them.
+ * - Hair: a thick shell over the skull, with the quiff sweeping forward
+ *   over the forehead.
+ * - Ears: stick out sideways at mid depth, level with the eyes and nose.
+ * - Face: a round button nose as the most forward point, big eyes nearly
+ *   flush with the face, full cheeks, a rounded jaw, and the open mouth
+ *   slightly recessed. The brows are painted on, not raised.
  * - Neck and hood: the neck column and the rolled hood around it.
  * - Torso: a wide, shallower ellipsoid for the chest cut off by the frame.
  * - Raised arm: a capsule from the shoulder to the cuff.
@@ -130,6 +133,23 @@ const ellipsoid = (
   return q > 0 ? depth * Math.sqrt(q) : 0;
 };
 
+/**
+ * Like an ellipsoid, but with a flatter front and steeper sides: memoji faces
+ * are broad and flat from the front, and curve back sharply at the cheeks.
+ */
+const dome = (
+  x: number,
+  y: number,
+  cx: number,
+  cy: number,
+  rx: number,
+  ry: number,
+  depth: number
+) => {
+  const q = 1 - ((x - cx) / rx) ** 2 - ((y - cy) / ry) ** 2;
+  return q > 0 ? depth * Math.pow(q, 0.4) : 0;
+};
+
 const capsule = (
   x: number,
   y: number,
@@ -187,11 +207,27 @@ export function buildRelief(img: CanvasImageSource, n: number) {
       const d = dist[i] * toPx;
 
       let base: number;
+      let head = 0;
+      let headBack = 0;
       if (isHandArea(x, y)) {
         // Fingers are thin: inflate them from their own outline.
         const fingers = Math.sqrt(1 - (1 - Math.min(d / 16, 1)) ** 2) * 0.06;
         base = Math.max(fingers, ellipsoid(x, y, 440, 222, 44, 42, 0.1));
       } else {
+        const isHair = luma < 0.3 && y < 205;
+        // Head: about as deep as it is wide, with the ears halfway back, so
+        // the skull reaches further behind the ears than the face does in
+        // front of them.
+        head = dome(x, y, 215, 218, 108, 122, 0.4);
+        headBack = dome(x, y, 215, 212, 110, 124, 0.48);
+        if (isHair) {
+          // The hair is a thick shell over the skull, and the quiff sweeps
+          // forward over the forehead.
+          const hair = dome(x, y, 212, 175, 106, 100, 0.44);
+          const quiff = bump(x, y, 212, 128, 42, 0.07);
+          head = Math.max(head, hair + quiff);
+          headBack = Math.max(headBack, dome(x, y, 212, 180, 108, 110, 0.52));
+        }
         base = Math.max(
           // Torso, cut off by the bottom of the frame.
           ellipsoid(x, y, 245, 560, 205, 265, 0.34),
@@ -200,14 +236,9 @@ export function buildRelief(img: CanvasImageSource, n: number) {
           isHoodie ? ellipsoid(x, y, 226, 350, 120, 48, 0.33) : 0,
           // Raised arm from the shoulder to the cuff, slightly forward.
           capsule(x, y, 392, 480, 424, 280, 42, 0.16) + 0.06,
-          // Head and hair cap.
-          ellipsoid(x, y, 215, 215, 108, 122, 0.4),
-          luma < 0.3 && y < 205
-            ? ellipsoid(x, y, 212, 172, 104, 96, 0.43)
-            : 0,
-          // Ears sit behind the face at the sides of the head.
-          ellipsoid(x, y, 122, 245, 24, 48, 0.08) + (x < 145 ? 0.08 : 0),
-          ellipsoid(x, y, 309, 228, 18, 38, 0.08) + (x > 294 ? 0.08 : 0)
+          // Ears stick out sideways at mid depth, level with eyes and nose.
+          ellipsoid(x, y, 122, 245, 24, 48, 0.06) + (x < 145 ? 0.05 : 0),
+          ellipsoid(x, y, 309, 228, 18, 38, 0.06) + (x > 294 ? 0.05 : 0)
         );
         // Anything the parts miss still gets a soft volume.
         base = Math.max(
@@ -220,23 +251,19 @@ export function buildRelief(img: CanvasImageSource, n: number) {
       const onFace = isSkin && ellipsoid(x, y, 215, 230, 92, 100, 1) > 0;
       if (onFace) {
         face +=
-          bump(x, y, 233, 240, 13, 0.07) + // nose
-          bump(x, y, 176, 262, 24, 0.025) + // cheeks
-          bump(x, y, 284, 254, 22, 0.025) +
-          bump(x, y, 188, 186, 20, 0.02) + // brow ridge
-          bump(x, y, 262, 180, 20, 0.02) +
-          bump(x, y, 234, 312, 22, 0.025); // chin
+          // Round button nose, the most forward point of the face.
+          bump(x, y, 233, 240, 14, 0.065) +
+          // Full, soft cheeks and a rounded jaw that comes forward.
+          bump(x, y, 178, 268, 34, 0.02) +
+          bump(x, y, 282, 262, 32, 0.02) +
+          bump(x, y, 232, 305, 30, 0.02);
       }
-      // Eye sockets with the eyeballs rounding out of them.
-      face +=
-        bump(x, y, 186, 221, 24, -0.03) +
-        bump(x, y, 186, 221, 14, 0.025) +
-        bump(x, y, 262, 211, 22, -0.03) +
-        bump(x, y, 262, 211, 13, 0.025);
-      // Open mouth sits inside the lips.
+      // Big eyes sit nearly flush with the face, just rounding out.
+      face += bump(x, y, 186, 221, 17, 0.015) + bump(x, y, 262, 211, 16, 0.015);
+      // Open mouth sits slightly inside the lips.
       const inMouth =
         x > 190 && x < 285 && y > 252 && y < 300 && luma < 0.45 && !isSkin;
-      face += inMouth ? -0.05 : bump(x, y, 236, 274, 32, 0.015);
+      face += inMouth ? -0.03 : 0;
       // Keep facial features off the hair, hood and hand.
       if (y > 330 || x > 330 || x < 130 || (luma < 0.3 && y < 200)) face = 0;
 
@@ -245,8 +272,8 @@ export function buildRelief(img: CanvasImageSource, n: number) {
 
       // Round every part into the silhouette so edges curve in.
       const edge = Math.sqrt(1 - (1 - Math.min(d / EDGE_RADIUS, 1)) ** 2);
-      front[i] = Math.max((base + face + detail) * edge, RIM);
-      back[i] = Math.max(base * 0.92 * edge, RIM);
+      front[i] = Math.max((Math.max(base, head) + face + detail) * edge, RIM);
+      back[i] = Math.max(Math.max(base * 0.92, headBack) * edge, RIM);
     }
   }
 
