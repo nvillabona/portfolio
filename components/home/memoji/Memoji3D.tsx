@@ -39,7 +39,7 @@ export default function Memoji3D({ alt, hint }: { alt: string; hint: string }) {
     lazyObserver.observe(mount);
 
     async function init() {
-      const [THREE, { buildHead, disposeHead }] = await Promise.all([
+      const [THREE, { addLights, buildHead, disposeHead }] = await Promise.all([
         import("three"),
         import("./head"),
       ]);
@@ -53,7 +53,7 @@ export default function Memoji3D({ alt, hint }: { alt: string; hint: string }) {
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
       renderer.setSize(mount.clientWidth, mount.clientHeight);
       renderer.outputColorSpace = THREE.SRGBColorSpace;
-      renderer.toneMapping = THREE.ACESFilmicToneMapping;
+      renderer.toneMapping = THREE.NeutralToneMapping;
       const canvas = renderer.domElement;
       canvas.setAttribute("aria-hidden", "true");
       canvas.className = "absolute inset-0 h-full w-full";
@@ -62,24 +62,13 @@ export default function Memoji3D({ alt, hint }: { alt: string; hint: string }) {
 
       const scene = new THREE.Scene();
       const camera = new THREE.PerspectiveCamera(30, 1, 0.1, 100);
-      camera.position.set(0, 0.05, 6.2);
+      camera.position.set(0, 0.05, 5.6);
 
-      // Soft studio lighting: a warm key from the upper left, a fill from
-      // the right and a rim light behind to separate the hair.
-      scene.add(new THREE.HemisphereLight(0xffffff, 0xb8a79a, 1.2));
-      const key = new THREE.DirectionalLight(0xfff4ea, 2.4);
-      key.position.set(-2.5, 3, 4);
-      scene.add(key);
-      const fill = new THREE.DirectionalLight(0xffffff, 0.9);
-      fill.position.set(3, 0.5, 2.5);
-      scene.add(fill);
-      const rim = new THREE.DirectionalLight(0xffffff, 1.4);
-      rim.position.set(0, 2.5, -4);
-      scene.add(rim);
+      addLights(scene);
 
       const memoji = new THREE.Group();
       const head = buildHead();
-      head.position.y = 0.12;
+      head.position.y = -0.02;
       memoji.add(head);
       scene.add(memoji);
 
