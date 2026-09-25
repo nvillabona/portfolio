@@ -2,18 +2,12 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import { buildBackTexture, buildRelief, RIM } from "./relief";
 
 const SIZE = 300;
 const SRC = "/memoji.webp";
 // Resolution of the relief mesh (vertices per side).
-const GRID = 192;
-// How far the thickest part of the memoji bulges out, in world units (the
-// memoji is 2 units wide).
-const MAX_DEPTH = 0.32;
-// Extra relief taken from the image brightness, for facial detail.
-const DETAIL_DEPTH = 0.035;
-// Minimum half-thickness at the silhouette edge, filled by stacked layers.
-const RIM = 0.035;
+const GRID = 208;
 const RIM_LAYERS = 10;
 const MAX_TILT = 0.45;
 
@@ -33,121 +27,6 @@ function loadImage(src: string) {
     img.onerror = reject;
     img.src = src;
   });
-}
-
-/**
- * Estimates a height map for the memoji from its silhouette: each opaque
- * pixel is raised according to its distance from the edge (rounded like an
- * inflated pillow) plus a little relief from its brightness.
- */
-function buildHeightMap(img: HTMLImageElement, n: number) {
-  const canvas = document.createElement("canvas");
-  canvas.width = n;
-  canvas.height = n;
-  const ctx = canvas.getContext("2d", { willReadFrequently: true })!;
-  ctx.drawImage(img, 0, 0, n, n);
-  const { data } = ctx.getImageData(0, 0, n, n);
-
-  const alpha = new Float32Array(n * n);
-  const luma = new Float32Array(n * n);
-  for (let i = 0; i < n * n; i++) {
-    alpha[i] = data[i * 4 + 3] / 255;
-    luma[i] =
-      (0.299 * data[i * 4] + 0.587 * data[i * 4 + 1] + 0.114 * data[i * 4 + 2]) /
-      255;
-  }
-
-  // Two-pass chamfer distance transform: distance from each inside pixel to
-  // the nearest transparent pixel.
-  const INF = 1e9;
-  const dist = new Float32Array(n * n);
-  for (let i = 0; i < n * n; i++) dist[i] = alpha[i] > 0.5 ? INF : 0;
-  const D = Math.SQRT2;
-  for (let y = 0; y < n; y++) {
-    for (let x = 0; x < n; x++) {
-      const i = y * n + x;
-      if (dist[i] === 0) continue;
-      let d = dist[i];
-      if (x > 0) d = Math.min(d, dist[i - 1] + 1);
-      if (y > 0) {
-        d = Math.min(d, dist[i - n] + 1);
-        if (x > 0) d = Math.min(d, dist[i - n - 1] + D);
-        if (x < n - 1) d = Math.min(d, dist[i - n + 1] + D);
-      }
-      dist[i] = d;
-    }
-  }
-  for (let y = n - 1; y >= 0; y--) {
-    for (let x = n - 1; x >= 0; x--) {
-      const i = y * n + x;
-      if (dist[i] === 0) continue;
-      let d = dist[i];
-      if (x < n - 1) d = Math.min(d, dist[i + 1] + 1);
-      if (y < n - 1) {
-        d = Math.min(d, dist[i + n] + 1);
-        if (x < n - 1) d = Math.min(d, dist[i + n + 1] + D);
-        if (x > 0) d = Math.min(d, dist[i + n - 1] + D);
-      }
-      dist[i] = d;
-    }
-  }
-  // Pixels beyond the frame are never counted as edges, so the cropped torso
-  // stays full height instead of flattening at the bottom of the image.
-  let maxDist = 0;
-  for (let i = 0; i < n * n; i++) maxDist = Math.max(maxDist, dist[i]);
-
-  // Rounded (circular) profile so edges curve in like a real surface.
-  let height = new Float32Array(n * n);
-  for (let i = 0; i < n * n; i++) {
-    if (dist[i] === 0) continue;
-    const t = Math.min(dist[i] / maxDist, 1);
-    height[i] = Math.sqrt(1 - (1 - t) * (1 - t)) * MAX_DEPTH;
-  }
-
-  // Blur to soften the ridges a distance transform leaves along the middle.
-  const blur = (src: Float32Array, r: number) => {
-    const tmp = new Float32Array(n * n);
-    const out = new Float32Array(n * n);
-    for (let y = 0; y < n; y++) {
-      for (let x = 0; x < n; x++) {
-        let s = 0;
-        let c = 0;
-        for (let k = -r; k <= r; k++) {
-          const xx = x + k;
-          if (xx < 0 || xx >= n) continue;
-          s += src[y * n + xx];
-          c++;
-        }
-        tmp[y * n + x] = s / c;
-      }
-    }
-    for (let y = 0; y < n; y++) {
-      for (let x = 0; x < n; x++) {
-        let s = 0;
-        let c = 0;
-        for (let k = -r; k <= r; k++) {
-          const yy = y + k;
-          if (yy < 0 || yy >= n) continue;
-          s += tmp[yy * n + x];
-          c++;
-        }
-        out[y * n + x] = s / c;
-      }
-    }
-    return out;
-  };
-  height = blur(blur(height, 3), 3);
-  const detail = blur(luma, 1);
-
-  for (let i = 0; i < n * n; i++) {
-    if (alpha[i] < 0.5) {
-      height[i] = 0;
-      continue;
-    }
-    height[i] += (detail[i] - 0.5) * DETAIL_DEPTH;
-    height[i] = Math.max(height[i], RIM);
-  }
-  return height;
 }
 
 export default function Memoji3D({ alt, hint }: { alt: string; hint: string }) {
@@ -207,13 +86,20 @@ export default function Memoji3D({ alt, hint }: { alt: string; hint: string }) {
       texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
       texture.needsUpdate = true;
 
-      // Relief mesh: a subdivided plane displaced by the height map. The back
-      // is the same surface mirrored, so the memoji is a closed volume.
-      const height = buildHeightMap(img, GRID);
-      const geometry = new THREE.PlaneGeometry(2, 2, GRID - 1, GRID - 1);
-      const pos = geometry.attributes.position;
-      for (let i = 0; i < pos.count; i++) pos.setZ(i, height[i]);
-      geometry.computeVertexNormals();
+      // Relief meshes sculpted from the memoji's features; the back is
+      // mirrored so the memoji is a closed volume.
+      const relief = buildRelief(img, GRID);
+      const makeSurface = (height: Float32Array) => {
+        const surface = new THREE.PlaneGeometry(2, 2, GRID - 1, GRID - 1);
+        const pos = surface.attributes.position;
+        for (let i = 0; i < pos.count; i++) pos.setZ(i, height[i]);
+        surface.computeVertexNormals();
+        return surface;
+      };
+      const geometry = makeSurface(relief.front);
+      const backGeometry = makeSurface(relief.back);
+      const backTexture = new THREE.CanvasTexture(buildBackTexture(img));
+      backTexture.colorSpace = THREE.SRGBColorSpace;
 
       const frontMaterial = new THREE.MeshStandardMaterial({
         map: texture,
@@ -222,18 +108,19 @@ export default function Memoji3D({ alt, hint }: { alt: string; hint: string }) {
         metalness: 0,
       });
       const backMaterial = new THREE.MeshStandardMaterial({
-        map: texture,
+        map: backTexture,
         alphaTest: 0.5,
-        roughness: 0.7,
+        roughness: 0.65,
         metalness: 0,
-        color: 0xb0a8a2,
+        color: 0xd8d2cc,
       });
       const memoji = new THREE.Group();
       memoji.add(new THREE.Mesh(geometry, frontMaterial));
-      const back = new THREE.Mesh(geometry, backMaterial);
+      const back = new THREE.Mesh(backGeometry, backMaterial);
       // three.js flips the winding for negatively scaled meshes itself.
       back.scale.z = -1;
       memoji.add(back);
+
       // Close the side wall between front and back with stacked cut-outs.
       const rimGeometry = new THREE.PlaneGeometry(2, 2);
       const rimMaterial = new THREE.MeshStandardMaterial({
@@ -342,6 +229,8 @@ export default function Memoji3D({ alt, hint }: { alt: string; hint: string }) {
         canvas.removeEventListener("pointerup", onPointerUp);
         canvas.removeEventListener("pointercancel", onPointerUp);
         geometry.dispose();
+        backGeometry.dispose();
+        backTexture.dispose();
         rimGeometry.dispose();
         rimMaterial.dispose();
         frontMaterial.dispose();
