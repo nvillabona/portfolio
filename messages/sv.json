@@ -10,7 +10,8 @@
     "language": "Språk"
   },
   "Home": {
-    "role": "Mjukvaruingenjör från Cali, Colombia."
+    "role": "Mjukvaruingenjör från Cali, Colombia.",
+    "memojiHint": "Dra för att rotera"
   },
   "About": {
     "heading": "Om mig",

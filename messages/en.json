@@ -10,7 +10,8 @@
     "language": "Language"
   },
   "Home": {
-    "role": "Software engineer from Cali, Colombia."
+    "role": "Software engineer from Cali, Colombia.",
+    "memojiHint": "Drag to rotate"
   },
   "About": {
     "heading": "About",
