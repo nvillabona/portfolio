@@ -11,7 +11,13 @@
     "skipToContent": "Saltar al contenido"
   },
   "Home": {
-    "role": "Ingeniero de software de Cali, Colombia."
+    "role": "Ingeniero de software de Cali, Colombia.",
+    "greeting": "Hola, soy",
+    "headline": "Desarrollador Frontend Senior",
+    "tagline": "Construyo aplicaciones web rápidas y accesibles con React, Vue y TypeScript, desde e-commerce hasta herramientas internas.",
+    "ctaContact": "Contáctame",
+    "ctaAbout": "Ver mi experiencia",
+    "location": "Cali, Colombia"
   },
   "About": {
     "heading": "Sobre mí",
@@ -31,7 +37,7 @@
   },
   "Contact": {
     "heading": "Contacto",
-    "intro": "Puedes contactarme en"
+    "intro": "¿Tienes un proyecto o una vacante en mente? Escríbeme por LinkedIn, suelo responder en un par de días."
   },
   "Skills": {
     "heading": "Mis Habilidades",
@@ -42,7 +48,7 @@
   "Experience": {
     "heading": "Mi Experiencia",
     "technologiesUsed": "Tecnologías utilizadas:",
-    "readMore": "Lee más sobre mí ➤",
+    "readMore": "Lee más sobre mí →",
     "jobs": {
       "perficient": {
         "title": "Desarrollador Frontend Senior",
@@ -61,5 +67,8 @@
         "period": "Oct 2020 - Dic 2021"
       }
     }
+  },
+  "Footer": {
+    "madeWith": "Hecho con Next.js"
   }
 }

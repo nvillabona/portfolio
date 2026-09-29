@@ -8,7 +8,7 @@
     /* Gives that scrolling effect as the typing happens */
 
     /* Adjust as needed */
-    animation: typing 3s steps(40, end),
+    animation: typing 3s steps(17, end),
         blink-caret .75s step-end infinite;
 }
 

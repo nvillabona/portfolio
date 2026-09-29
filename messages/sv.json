@@ -11,7 +11,13 @@
     "skipToContent": "Hoppa till innehållet"
   },
   "Home": {
-    "role": "Mjukvaruingenjör från Cali, Colombia."
+    "role": "Mjukvaruingenjör från Cali, Colombia.",
+    "greeting": "Hej, jag är",
+    "headline": "Senior frontendutvecklare",
+    "tagline": "Jag bygger snabba, tillgängliga webbappar med React, Vue och TypeScript, från e-handel till interna verktyg.",
+    "ctaContact": "Kontakta mig",
+    "ctaAbout": "Se min erfarenhet",
+    "location": "Cali, Colombia"
   },
   "About": {
     "heading": "Om mig",
@@ -31,7 +37,7 @@
   },
   "Contact": {
     "heading": "Kontakt",
-    "intro": "Du kan kontakta mig på"
+    "intro": "Har du ett projekt eller en tjänst i åtanke? Skriv till mig på LinkedIn, jag svarar oftast inom ett par dagar."
   },
   "Skills": {
     "heading": "Mina Färdigheter",
@@ -42,7 +48,7 @@
   "Experience": {
     "heading": "Min Erfarenhet",
     "technologiesUsed": "Använda teknologier:",
-    "readMore": "Läs mer om mig ➤",
+    "readMore": "Läs mer om mig →",
     "jobs": {
       "perficient": {
         "title": "Senior Frontend-utvecklare",
@@ -61,5 +67,8 @@
         "period": "Okt 2020 - Dec 2021"
       }
     }
+  },
+  "Footer": {
+    "madeWith": "Byggd med Next.js"
   }
 }
