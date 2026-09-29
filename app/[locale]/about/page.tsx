@@ -85,7 +85,7 @@ async function page({ params }: Props) {
                   {[1, 2, 3, 4].map((step) => (
                     <span
                       key={step}
-                      className={`h-1.5 flex-1 rounded-full ${step <= language.score ? "bg-orange-400" : "bg-white/15"}`}
+                      className={`h-1.5 flex-1 rounded-full ${step <= language.score ? "bg-accent" : "bg-white/15"}`}
                     />
                   ))}
                 </div>
