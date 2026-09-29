@@ -52,14 +52,14 @@ export default async function Home({
             >
               Nicolás Villabona
             </h1>
-            <p className="text-xl font-bold text-orange-300 sm:text-2xl">{t("headline")}</p>
+            <p className="text-xl font-bold text-accent-soft sm:text-2xl">{t("headline")}</p>
             <p className="mt-3 max-w-xl text-lg leading-relaxed text-white/85 xs:mx-auto lg:mx-0">
               {t("tagline")}
             </p>
             <div className="mt-6 flex flex-wrap gap-3 xs:justify-center lg:justify-start">
               <Link
                 href="/contact"
-                className="rounded-lg bg-orange-400 px-5 py-2.5 font-bold text-tom-thumb-950 transition-colors hover:bg-orange-300"
+                className="rounded-lg bg-accent px-5 py-2.5 font-bold text-tom-thumb-950 transition-colors hover:bg-accent-soft"
               >
                 {t("ctaContact")}
               </Link>

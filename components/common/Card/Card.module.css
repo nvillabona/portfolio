@@ -1,10 +1,11 @@
 .card {
-    background: rgba(255, 255, 255, 0.08);
+    /* Green-tinted glass so cards read as part of the palette instead of grey */
+    background: rgb(var(--surface) / 0.10);
     border-radius: 20px;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
     backdrop-filter: blur(6px);
     -webkit-backdrop-filter: blur(6px);
-    border: 1px solid rgba(255, 255, 255, 0.14);
+    border: 1px solid rgb(var(--surface) / 0.28);
     overflow: hidden;
     transition: border-color 200ms ease;
     width: 100%;
@@ -23,7 +24,7 @@
 
 /* Cards aren't links, so hover only brightens the border instead of scaling */
 .card:hover {
-    border-color: rgba(255, 255, 255, 0.28);
+    border-color: rgb(var(--surface) / 0.5);
 }
 
 @keyframes show {

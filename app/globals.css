@@ -6,17 +6,27 @@
   /* The site only has a dark theme, so text stays light regardless of OS setting */
   --foreground-rgb: 255, 255, 255;
   color-scheme: dark;
+
+  /* Palette: forest greens (tailwind tom-thumb) plus one mint accent */
+  --accent: 127 216 166;
+  --accent-soft: 168 230 195;
+  --bg-base: 14 24 18;
+  --bg-glow: 52 85 63;
+  --surface: 111 152 121;
 }
 
 html{
-  background: rgba(33, 46, 37, 1);
+  background: rgb(var(--bg-base));
 }
 
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: rgb(0, 0, 0);
-  background: linear-gradient(353deg, rgba(0, 0, 0, 1) 0%, rgba(33, 46, 37, 1) 82%, rgba(52, 85, 63, 1) 100%);
+  /* Deep green base with a soft glow at the top; fixed so long pages never fade to pure black */
+  background:
+    radial-gradient(ellipse 90% 60% at 50% -10%, rgb(var(--bg-glow) / 0.9), transparent 70%),
+    rgb(var(--bg-base));
+  background-attachment: fixed;
   font-weight: 400;
   font-style: normal;
 }

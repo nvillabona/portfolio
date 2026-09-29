@@ -24,7 +24,7 @@ function Experience({ showDetails = false }: ExperienceProps) {
               <span
                 aria-hidden="true"
                 className={`absolute -left-[7px] top-1.5 h-3 w-3 rounded-full border-2 ${
-                  index === 0 ? "border-orange-400 bg-orange-400" : "border-tom-thumb-300 bg-tom-thumb-900"
+                  index === 0 ? "border-accent bg-accent" : "border-tom-thumb-300 bg-tom-thumb-900"
                 }`}
               />
               <p className="mb-1 inline-block rounded-full bg-white/10 px-2.5 py-0.5 text-xs text-tom-thumb-100">

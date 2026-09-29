@@ -9,6 +9,11 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        // Accent comes from CSS variables in globals.css so the palette is tuned in one place
+        accent: {
+          DEFAULT: 'rgb(var(--accent) / <alpha-value>)',
+          soft: 'rgb(var(--accent-soft) / <alpha-value>)',
+        },
         'tom-thumb': {
           '50': '#f2f7f3',
           '100': '#e0ebe1',
