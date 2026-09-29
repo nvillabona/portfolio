@@ -4,6 +4,10 @@ import Experience from "@/components/home/experience/Experience";
 import Image from "next/image";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { flags } from "@/lib/icons";
+import { getYearsOfExperience } from "@/lib/experience";
+
+// Re-render daily so the years of experience stay current without a redeploy.
+export const revalidate = 86400;
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -33,6 +37,7 @@ async function page({ params }: Props) {
             <p className="mb-2">
               {t.rich("bio1", {
                 strong: (chunks) => <strong>{chunks}</strong>,
+                years: getYearsOfExperience(),
               })}
             </p>
             <p>{t("bio2")}</p>
