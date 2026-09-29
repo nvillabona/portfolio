@@ -10,7 +10,11 @@ function Navbar() {
     const t = useTranslations('Navbar')
     return (
         <nav className={styles.navContainer}>
-            <div className={styles.navSpacer} aria-hidden="true" />
+            <div className={styles.navInner}>
+            <Link href="/" className={styles.brand} aria-label="Nicolás Villabona">
+                <span className={styles.monogram} aria-hidden="true">NV</span>
+                <span className={styles.brandName}>Nicolás Villabona</span>
+            </Link>
             <div className={styles.navLinks}>
                 <Link
                     href="/"
@@ -36,6 +40,7 @@ function Navbar() {
             </div>
             <div className={styles.navActions}>
                 <LanguageSwitcher />
+            </div>
             </div>
         </nav>
     )
