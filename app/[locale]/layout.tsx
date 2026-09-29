@@ -5,6 +5,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import "../globals.css";
 import { Navbar } from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer/Footer";
 import { routing } from "@/i18n/routing";
 
 export function generateStaticParams() {
@@ -54,7 +55,7 @@ export default async function RootLayout({
 
   return (
     <html lang={locale}>
-      <body className={atkinson.className}>
+      <body className={`${atkinson.className} flex min-h-screen flex-col`}>
         <a
           href="#main-content"
           className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[1000] focus:rounded-lg focus:bg-tom-thumb-500 focus:px-4 focus:py-2"
@@ -63,9 +64,10 @@ export default async function RootLayout({
         </a>
         <NextIntlClientProvider>
           <Navbar />
-          <main id="main-content" tabIndex={-1} className="flex min-h-screen flex-col items-center gap-4 md:px-10 lg:px-24 xl:px-60 xs:px-4 pt-20">
+          <main id="main-content" tabIndex={-1} className="mx-auto flex flex-1 w-full max-w-6xl flex-col items-center gap-6 px-4 pt-24 md:px-8">
             {children}
           </main>
+          <Footer />
         </NextIntlClientProvider>
       </body>
     </html>

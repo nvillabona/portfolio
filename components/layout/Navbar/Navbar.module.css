@@ -1,24 +1,87 @@
+/* Translucent bar that lets the page gradient through, with a hairline border instead of a solid block */
 .navContainer {
-    display: flex;
-    align-items: center;
-    padding: .5rem .75rem 0;
-    background: rgba(52, 85, 63, 1);
-    color: white;
     position: fixed;
     z-index: 100;
     width: 100%;
-    gap: .5rem;
+    color: white;
+    background: rgba(18, 28, 22, 0.72);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.navSpacer {
+/* Same max width as the page content, so the brand and switcher line up with the cards */
+.navInner {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    max-width: 72rem;
+    height: 4rem;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+@media (min-width: 720px) {
+    .navInner {
+        padding: 0 2rem;
+    }
+}
+
+.brand {
+    display: flex;
     flex: 1;
+    align-items: center;
+    gap: 0.6rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.monogram {
+    display: grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 10px;
+    /* Site greens (tom-thumb 400 to 600) so the brand matches the cards and social buttons */
+    background: linear-gradient(135deg, #6f9879, #3b6047);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    color: white;
+    font-size: 0.85rem;
+    letter-spacing: 0.02em;
 }
 
 .navLinks {
     display: flex;
-    flex: 1;
-    justify-content: center;
-    min-width: 0;
+    gap: 0.25rem;
+    padding: 0.25rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.navLinks>a {
+    padding: 0.4rem 1rem;
+    border-radius: 999px;
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.75);
+    white-space: nowrap;
+    transition: background-color 150ms ease, color 150ms ease;
+}
+
+.navLinks>a:hover {
+    color: white;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.navLinks>a:focus-visible {
+    outline: 2px solid white;
+    outline-offset: 2px;
+}
+
+.selected {
+    color: white !important;
+    background: rgba(255, 255, 255, 0.14) !important;
+    font-weight: 700;
 }
 
 .navActions {
@@ -26,43 +89,43 @@
     flex: 1;
     justify-content: flex-end;
     align-items: center;
-    padding-bottom: .35rem;
 }
 
-.navLinks>a {
-    padding: 0.5em 1em;
-    text-align: center;
-    white-space: nowrap;
-}
-
-.navLinks>a:hover {
-    background-image: linear-gradient(to right, #ffffff4d, rgba(52, 85, 63, 1) 150%, #ffffff4d);
-}
-
-.selected {
-    border-bottom: 2px solid white;
-}
-
-@media (max-width: 539px) {
-    .navContainer {
-        gap: 0.25rem;
-    }
-
-    .navSpacer {
+/* Below 720px the name hides and only the monogram stays */
+@media (max-width: 719px) {
+    .brandName {
         display: none;
     }
 
-    .navLinks {
-        flex: 1;
-        justify-content: flex-start;
-    }
-
+    .brand,
     .navActions {
         flex: 0 0 auto;
     }
 
+    .navLinks {
+        flex: 1;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 539px) {
+    .navInner {
+        gap: 0.5rem;
+        padding: 0 0.75rem;
+    }
+
+    .monogram {
+        width: 2rem;
+        height: 2rem;
+        font-size: 0.75rem;
+    }
+
+    .navLinks {
+        gap: 0;
+    }
+
     .navLinks>a {
-        padding: 0.4em 0.2em;
-        font-size: 0.82rem;
+        padding: 0.35rem 0.55rem;
+        font-size: 0.8rem;
     }
 }

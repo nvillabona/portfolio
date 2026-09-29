@@ -11,7 +11,13 @@
     "skipToContent": "Skip to content"
   },
   "Home": {
-    "role": "Software engineer from Cali, Colombia."
+    "role": "Software engineer from Cali, Colombia.",
+    "greeting": "Hi, I’m",
+    "headline": "Senior Frontend Developer",
+    "tagline": "I build fast, accessible web apps with React, Vue and TypeScript, from e-commerce to internal tools.",
+    "ctaContact": "Get in touch",
+    "ctaAbout": "See my experience",
+    "location": "Cali, Colombia"
   },
   "About": {
     "heading": "About",
@@ -31,7 +37,7 @@
   },
   "Contact": {
     "heading": "Contact",
-    "intro": "You can contact me at"
+    "intro": "Have a project or a role in mind? Message me on LinkedIn, I usually reply within a couple of days."
   },
   "Skills": {
     "heading": "My Skills",
@@ -42,7 +48,7 @@
   "Experience": {
     "heading": "My Experience",
     "technologiesUsed": "Technologies used:",
-    "readMore": "Read more about me ➤",
+    "readMore": "Read more about me →",
     "jobs": {
       "perficient": {
         "title": "Senior Frontend Developer",
@@ -61,5 +67,8 @@
         "period": "Oct 2020 - Dec 2021"
       }
     }
+  },
+  "Footer": {
+    "madeWith": "Built with Next.js"
   }
 }

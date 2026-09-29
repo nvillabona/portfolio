@@ -4,6 +4,7 @@ import Experience from "@/components/home/experience/Experience";
 import Image from "next/image";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { flags } from "@/lib/icons";
+import SectionTitle from "@/components/common/SectionTitle";
 import { getYearsOfExperience } from "@/lib/experience";
 
 // Re-render daily so the years of experience stay current without a redeploy.
@@ -18,10 +19,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 const spokenLanguages = [
-  { key: "spanish", level: "native", flag: flags.colombia, country: "Colombia" },
-  { key: "english", level: "advanced", flag: flags.usa, country: "USA" },
-  { key: "french", level: "intermediate", flag: flags.france, country: "France" },
-  { key: "swedish", level: "basic", flag: flags.sweden, country: "Sweden" },
+  { key: "spanish", level: "native", score: 4, flag: flags.colombia, country: "Colombia" },
+  { key: "english", level: "advanced", score: 3, flag: flags.usa, country: "USA" },
+  { key: "french", level: "intermediate", score: 2, flag: flags.france, country: "France" },
+  { key: "swedish", level: "basic", score: 1, flag: flags.sweden, country: "Sweden" },
 ] as const;
 
 async function page({ params }: Props) {
@@ -31,22 +32,26 @@ async function page({ params }: Props) {
   return (
     <>
       <Card>
-        <div className="grid md:grid-cols-2 xs:grid-cols-1">
+        <div className="grid items-center gap-8 md:grid-cols-[1fr_auto]">
           <div>
-            <h1 className="text-3xl font-semibold mb-4">{t("heading")}</h1>
-            <p className="mb-2">
-              {t.rich("bio1", {
-                strong: (chunks) => <strong>{chunks}</strong>,
-                years: getYearsOfExperience(),
-              })}
-            </p>
-            <p>{t("bio2")}</p>
+            <SectionTitle as="h1">{t("heading")}</SectionTitle>
+            <div className="max-w-prose space-y-4 text-lg leading-relaxed text-white/90">
+              <p>
+                {t.rich("bio1", {
+                  strong: (chunks) => <strong>{chunks}</strong>,
+                  years: getYearsOfExperience(),
+                })}
+              </p>
+              <p>{t("bio2")}</p>
+            </div>
           </div>
-          <div className="flex justify-center items-center">
+          <div className="relative flex justify-center">
+            <div aria-hidden="true" className="absolute inset-6 rounded-full bg-tom-thumb-400/30 blur-3xl" />
             <Image
+              className="relative"
               src="/me.webp"
-              width={300}
-              height={300}
+              width={260}
+              height={260}
               alt="Nicolás Villabona"
               quality={90}
               priority={true}
@@ -55,31 +60,41 @@ async function page({ params }: Props) {
         </div>
       </Card>
       <Card>
-        <h2 className="text-3xl font-semibold mb-4">
-          {t("languagesHeading")}
-        </h2>
-        <div className="grid md:grid-cols-4 xs:grid-cols-2 place-items-center">
+        <SectionTitle>{t("languagesHeading")}</SectionTitle>
+        <ul className="grid gap-4 xs:grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
           {spokenLanguages.map((language) => (
-            <div
+            <li
               key={language.key}
-              className="flex flex-col items-center justify-center mb-2"
+              className="flex items-center gap-4 rounded-xl border border-white/10 bg-white/5 p-4"
             >
               <Image
+                className="rounded"
                 src={language.flag}
-                width={48}
-                height={36}
+                width={40}
+                height={30}
                 alt={language.country}
                 quality={90}
               />
-              <p>{t(`languages.${language.key}`)}</p>
-              <p className="text-tom-thumb-300">
-                {t(`languages.${language.level}`)}
-              </p>
-            </div>
+              <div className="flex-1">
+                <p className="font-bold">{t(`languages.${language.key}`)}</p>
+                <p className="text-sm text-tom-thumb-200">
+                  {t(`languages.${language.level}`)}
+                </p>
+                {/* Four-segment level meter, decorative since the level is written above */}
+                <div aria-hidden="true" className="mt-2 flex gap-1">
+                  {[1, 2, 3, 4].map((step) => (
+                    <span
+                      key={step}
+                      className={`h-1.5 flex-1 rounded-full ${step <= language.score ? "bg-orange-400" : "bg-white/15"}`}
+                    />
+                  ))}
+                </div>
+              </div>
+            </li>
           ))}
-        </div>
+        </ul>
       </Card>
-      <Card className="mb-5">
+      <Card>
         <Experience showDetails />
       </Card>
     </>

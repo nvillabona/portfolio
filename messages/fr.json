@@ -11,7 +11,13 @@
     "skipToContent": "Aller au contenu"
   },
   "Home": {
-    "role": "Ingénieur logiciel originaire de Cali, Colombie."
+    "role": "Ingénieur logiciel originaire de Cali, Colombie.",
+    "greeting": "Bonjour, je suis",
+    "headline": "Développeur Frontend Senior",
+    "tagline": "Je crée des applications web rapides et accessibles avec React, Vue et TypeScript, du e-commerce aux outils internes.",
+    "ctaContact": "Me contacter",
+    "ctaAbout": "Voir mon expérience",
+    "location": "Cali, Colombie"
   },
   "About": {
     "heading": "À propos",
@@ -31,7 +37,7 @@
   },
   "Contact": {
     "heading": "Contact",
-    "intro": "Vous pouvez me contacter sur"
+    "intro": "Un projet ou un poste en tête ? Écrivez-moi sur LinkedIn, je réponds généralement sous quelques jours."
   },
   "Skills": {
     "heading": "Mes Compétences",
@@ -42,7 +48,7 @@
   "Experience": {
     "heading": "Mon Expérience",
     "technologiesUsed": "Technologies utilisées :",
-    "readMore": "En savoir plus sur moi ➤",
+    "readMore": "En savoir plus sur moi →",
     "jobs": {
       "perficient": {
         "title": "Développeur Frontend Senior",
@@ -61,5 +67,8 @@
         "period": "Oct 2020 - Déc 2021"
       }
     }
+  },
+  "Footer": {
+    "madeWith": "Réalisé avec Next.js"
   }
 }

@@ -35,28 +35,24 @@ export const socialNetworks = [
   },
 ];
 
-function Social() {
+function Social({ className = "" }: { className?: string }) {
   return (
-    <div className="flex xs:justify-around md:justify-center w-full mb-4">
+    <ul className={`flex flex-wrap gap-3 ${className}`}>
       {socialNetworks.map((network) => (
-        <a
-          key={network.name}
-          className="bg-tom-thumb-500 md:mx-4  p-2 rounded-3xl mt-4 w-10 hover:bg-tom-thumb-300"
-          href={network.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label={network.name}
-        >
-          <Image
-            src={network.icon}
-            alt=""
-            height={25}
-            width={25}
+        <li key={network.name}>
+          <a
+            className="flex h-11 w-11 items-center justify-center rounded-full bg-tom-thumb-600 transition-colors hover:bg-tom-thumb-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+            href={network.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={network.name}
             title={network.name}
-          />
-        </a>
+          >
+            <Image src={network.icon} alt="" height={22} width={22} />
+          </a>
+        </li>
       ))}
-    </div>
+    </ul>
   );
 }
 
