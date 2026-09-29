@@ -4,7 +4,7 @@ import styles from "./page.module.css";
 import Card from "@/components/common/Card/Card";
 import Skills from "@/components/home/skills/Skills";
 import Experience from "@/components/home/experience/Experience";
-import Social from "@/components/common/Social/Social";
+import Social, { socialNetworks } from "@/components/common/Social/Social";
 
 export default async function Home({
   params,
@@ -14,8 +14,28 @@ export default async function Home({
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations("Home");
+  const tJobs = await getTranslations("Experience.jobs");
+  const personJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: "Nicolás Villabona",
+    jobTitle: tJobs("perficient.title"),
+    worksFor: { "@type": "Organization", name: "Perficient" },
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: "Cali",
+      addressCountry: "CO",
+    },
+    sameAs: socialNetworks.map((network) => network.url),
+  };
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(personJsonLd).replace(/</g, "\\u003c"),
+        }}
+      />
       <Card>
         <div className="grid lg:grid-cols-2 xs:grid-cols-1 gap-4">
           <div>

@@ -1,13 +1,14 @@
 {
   "Metadata": {
     "title": "Nicolás Villabona",
-    "description": "Nicolás Villabona Desarrollador Frontend"
+    "description": "Portafolio de Nicolás Villabona, Desarrollador Frontend Senior de Cali, Colombia, especializado en React, Vue y TypeScript. Conoce mis habilidades, experiencia y cómo contactarme."
   },
   "Navbar": {
     "home": "Inicio",
     "about": "Sobre mí",
     "contact": "Contacto",
-    "language": "Idioma"
+    "language": "Idioma",
+    "skipToContent": "Saltar al contenido"
   },
   "Home": {
     "role": "Ingeniero de software de Cali, Colombia."

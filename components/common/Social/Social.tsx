@@ -2,7 +2,7 @@ import Image from "next/image";
 import React from "react";
 import { socialIcons } from "@/lib/icons";
 
-const socialNetworks = [
+export const socialNetworks = [
   {
     name: "LinkedIn",
     url: "https://www.linkedin.com/in/nvillabona/",
@@ -24,8 +24,8 @@ const socialNetworks = [
     icon: socialIcons.bluesky
   },
   {
-    name: "Twitter",
-    url: "https://twitter.com/n_villabona/",
+    name: "X",
+    url: "https://x.com/n_villabona",
     icon: socialIcons.twitter,
   },
   {

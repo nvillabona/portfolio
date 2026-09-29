@@ -12,13 +12,25 @@ function Navbar() {
         <nav className={styles.navContainer}>
             <div className={styles.navSpacer} aria-hidden="true" />
             <div className={styles.navLinks}>
-                <Link href="/" className={pathname === '/' ? styles.selected : ""}>
+                <Link
+                    href="/"
+                    className={pathname === '/' ? styles.selected : ""}
+                    aria-current={pathname === '/' ? 'page' : undefined}
+                >
                     {t('home')}
                 </Link>
-                <Link href="/about" className={pathname === '/about' ? styles.selected : ""}>
+                <Link
+                    href="/about"
+                    className={pathname === '/about' ? styles.selected : ""}
+                    aria-current={pathname === '/about' ? 'page' : undefined}
+                >
                     {t('about')}
                 </Link>
-                <Link href="/contact" className={pathname === '/contact' ? styles.selected : ""}>
+                <Link
+                    href="/contact"
+                    className={pathname === '/contact' ? styles.selected : ""}
+                    aria-current={pathname === '/contact' ? 'page' : undefined}
+                >
                     {t('contact')}
                 </Link>
             </div>
