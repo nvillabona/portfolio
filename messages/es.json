@@ -21,7 +21,7 @@
   },
   "About": {
     "heading": "Sobre mí",
-    "bio1": "Soy <strong>Nicolás Villabona</strong>, Desarrollador Frontend con más de cuatro años de experiencia. Me especializo en React y Vue, creando aplicaciones web dinámicas y escalables. Tengo experiencia en HTML, CSS, Sass y librerías de UI como Tailwind y Material UI, garantizando tanto funcionalidad como estética.",
+    "bio1": "Soy <strong>Nicolás Villabona</strong>, Desarrollador Frontend con más de {years} años de experiencia. Me especializo en React y Vue, creando aplicaciones web dinámicas y escalables. Tengo experiencia en HTML, CSS, Sass y librerías de UI como Tailwind y Material UI, garantizando tanto funcionalidad como estética.",
     "bio2": "Mi trayectoria abarca e-commerce, aplicaciones internas y proyectos web3. Siempre estoy aprendiendo, actualmente enfocado en TypeScript y microfrontends. Me impulsan la innovación y el trabajo en equipo.",
     "languagesHeading": "Idiomas que hablo",
     "languages": {
