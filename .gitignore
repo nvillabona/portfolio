@@ -38,3 +38,6 @@ next-env.d.ts
 # claude
 .claude
 CLAUDE.md
+
+# memoji head build intermediates
+scripts/memoji/.work/

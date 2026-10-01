@@ -32,18 +32,24 @@ export default function Memoji3D({ alt, hint }: { alt: string; hint: string }) {
       (entries) => {
         if (!entries.some((e) => e.isIntersecting)) return;
         lazyObserver.disconnect();
-        init();
+        // If the model fails to load, the static image simply stays.
+        init().catch(() => {});
       },
       { rootMargin: "200px" }
     );
     lazyObserver.observe(mount);
 
     async function init() {
-      const [THREE, { addLights, buildHead, disposeHead }] = await Promise.all([
+      const [THREE, { loadHead, disposeHead }] = await Promise.all([
         import("three"),
         import("./head"),
       ]);
       if (disposed || !mount) return;
+      const head = await loadHead();
+      if (disposed) {
+        disposeHead(head);
+        return;
+      }
 
       const reducedMotion = window.matchMedia(
         "(prefers-reduced-motion: reduce)"
@@ -53,7 +59,6 @@ export default function Memoji3D({ alt, hint }: { alt: string; hint: string }) {
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
       renderer.setSize(mount.clientWidth, mount.clientHeight);
       renderer.outputColorSpace = THREE.SRGBColorSpace;
-      renderer.toneMapping = THREE.NeutralToneMapping;
       const canvas = renderer.domElement;
       canvas.setAttribute("aria-hidden", "true");
       canvas.className = "absolute inset-0 h-full w-full";
@@ -62,13 +67,9 @@ export default function Memoji3D({ alt, hint }: { alt: string; hint: string }) {
 
       const scene = new THREE.Scene();
       const camera = new THREE.PerspectiveCamera(30, 1, 0.1, 100);
-      camera.position.set(0, 0.05, 5.6);
-
-      addLights(scene);
+      camera.position.set(0, 0, 5.4);
 
       const memoji = new THREE.Group();
-      const head = buildHead();
-      head.position.y = -0.02;
       memoji.add(head);
       scene.add(memoji);
 
