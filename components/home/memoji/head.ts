@@ -1,104 +1,105 @@
 import * as THREE from "three";
+import { VIEWS } from "./views";
 
 /**
- * The memoji head, reconstructed from the front, back, side and top
- * reference views.
+ * The memoji head, reconstructed from the reference views (front, back,
+ * both sides, top and three-quarter).
  *
  * `public/memoji/head.bin` is the head's volume: the shape that fits every
  * view's silhouette at once (a visual hull), smoothed and simplified. Each
- * vertex also stores whether it can be seen from each reference view.
+ * vertex also stores whether each reference view can see it.
  *
- * `public/memoji/views.jpg` holds the five reference views. The shader
- * projects each view onto the head the way a projector would, and blends
- * them by how directly the surface faces each one, so the head looks like
- * the reference from every angle the references cover.
+ * `public/memoji/views.jpg` holds the reference views and `views-mask.png`
+ * where each one shows the head. The shader projects the views onto the head
+ * like projectors and favours the views drawn from closest to where the
+ * visitor is looking from, so at each reference angle the head looks exactly
+ * like that drawing, and in between it blends the two nearest ones.
+ *
+ * scripts/memoji/build_head.py builds all three files and `views.ts`.
  */
 
 const MODEL_URL = "/memoji/head.bin";
 const VIEWS_URL = "/memoji/views.jpg";
-
-// Half-extents of the head, matching the reference views' bounding boxes:
-// width (x), height (y) and depth (z).
-const HALF_WIDTH = 0.92759;
-const HALF_HEIGHT = 1.1;
-const HALF_DEPTH = 0.93844;
-
-// Where each view's bounding box sits in the atlas: [u0, v0, u1, v1], with
-// (u0, v0) its top-left corner.
-const RECTS = {
-  front: [0.00402, 0.99465, 0.31322, 0.50688],
-  back: [0.33736, 0.99465, 0.64885, 0.50994],
-  left: [0.67069, 0.99465, 0.98448, 0.50535],
-  right: [0.00402, 0.49465, 0.30632, 0.01453],
-  top: [0.33736, 0.49465, 0.66264, 0.04511],
-} as const;
+const MASK_URL = "/memoji/views-mask.png";
+const COUNT = VIEWS.length;
 
 const vertexShader = /* glsl */ `
-  attribute vec4 visSides; // front, back, left, right
-  attribute float visTop;
+  attribute vec4 visA; // front, back, left, right
+  attribute vec2 visB; // top, three-quarter
   varying vec3 vPos;
   varying vec3 vNormal;
-  varying vec4 vVisSides;
-  varying float vVisTop;
+  varying vec4 vVisA;
+  varying vec2 vVisB;
+  varying vec3 vEye;
   void main() {
     vPos = position;
     vNormal = normal;
-    vVisSides = visSides;
-    vVisTop = visTop;
+    vVisA = visA;
+    vVisB = visB;
+    // Where the camera is, as seen from the head.
+    vEye = normalize((inverse(modelMatrix) * vec4(cameraPosition, 1.0)).xyz);
     gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
   }
 `;
 
 const fragmentShader = /* glsl */ `
+  #define COUNT ${COUNT}
   uniform sampler2D views;
-  uniform vec4 rectFront;
-  uniform vec4 rectBack;
-  uniform vec4 rectLeft;
-  uniform vec4 rectRight;
-  uniform vec4 rectTop;
-  uniform vec3 halfSize;
+  uniform sampler2D masks;
+  uniform vec4 projU[COUNT];
+  uniform vec4 projV[COUNT];
+  uniform vec4 rect[COUNT];
+  uniform vec3 dir[COUNT];
+  uniform vec3 skin;
   varying vec3 vPos;
   varying vec3 vNormal;
-  varying vec4 vVisSides;
-  varying float vVisTop;
-
-  vec3 project(vec4 rect, vec2 st) {
-    return texture2D(views, mix(rect.xy, rect.zw, clamp(st, 0.0, 1.0))).rgb;
-  }
+  varying vec4 vVisA;
+  varying vec2 vVisB;
+  varying vec3 vEye;
 
   void main() {
     vec3 n = normalize(vNormal);
-    vec3 p = vPos / halfSize; // -1..1 across the head
-    float t = (1.0 - p.y) * 0.5; // top of the head = 0
+    vec3 eye = normalize(vEye);
+    vec4 p = vec4(vPos, 1.0);
+    float vis[COUNT];
+    vis[0] = vVisA.x; vis[1] = vVisA.y; vis[2] = vVisA.z; vis[3] = vVisA.w;
+    vis[4] = vVisB.x; vis[5] = vVisB.y;
 
-    // Favour whichever view faces the surface most squarely.
-    // The front view is the most detailed and the views were drawn rather
-    // than photographed, so they disagree slightly; let the front win ties.
-    float wF = 2.5 * vVisSides.x * pow(max(n.z, 0.0), 6.0);
-    float wB = vVisSides.y * pow(max(-n.z, 0.0), 6.0);
-    float wL = vVisSides.z * pow(max(n.x, 0.0), 6.0);
-    float wR = vVisSides.w * pow(max(-n.x, 0.0), 6.0);
-    float wT = vVisTop * pow(max(n.y, 0.0), 6.0);
-    // The top view only covers the crown; toward the front it shows the
-    // forehead under the fringe, which the front view draws better.
-    wT *= smoothstep(0.0, 0.4, p.y) * (1.0 - smoothstep(0.15, 0.55, p.z));
-    // Underneath, where no view looks, borrow from the front and back.
-    // Down the middle of the face the front view is always the best source;
-    // the side views only see that strip edge-on.
-    float centre = (1.0 - smoothstep(0.3, 0.55, abs(p.x))) * smoothstep(0.0, 0.2, n.z);
-    wL *= 1.0 - centre;
-    wR *= 1.0 - centre;
-    float under = 0.02 + 0.3 * max(-n.y, 0.0);
-    wF += under * step(0.0, n.z);
-    wB += under * step(n.z, 0.0);
+    // Down the middle of the face the side views only see the cheeks
+    // edge-on, and draw the nose where the cheeks are.
+    float centre = (1.0 - smoothstep(0.28, 0.51, abs(vPos.x))) * smoothstep(0.0, 0.2, n.z);
 
-    vec3 c = vec3(0.0);
-    c += wF * project(rectFront, vec2((p.x + 1.0) * 0.5, t));
-    c += wB * project(rectBack, vec2((1.0 - p.x) * 0.5, t));
-    c += wL * project(rectLeft, vec2((1.0 - p.z) * 0.5, t));
-    c += wR * project(rectRight, vec2((p.z + 1.0) * 0.5, t));
-    c += wT * project(rectTop, vec2((p.x + 1.0) * 0.5, (p.z + 1.0) * 0.5));
-    gl_FragColor = vec4(c / (wF + wB + wL + wR + wT), 1.0);
+    // Score each view for this spot, then blend them by score.
+    float score[COUNT];
+    vec3 color[COUNT];
+    // Where no view shows the spot (under the chin), plain skin.
+    float best = -2000.0;
+    for (int i = 0; i < COUNT; i++) {
+      score[i] = -1e9;
+      color[i] = vec3(0.0);
+      vec2 uv = vec2(dot(projU[i], p), dot(projV[i], p));
+      vec4 r = rect[i];
+      if (uv.x < r.x || uv.x > r.z || uv.y < r.y || uv.y > r.w) continue;
+      // How well this view shows this spot: whether it is hidden from the
+      // view, near the view's outline, or seen edge-on.
+      float trust = vis[i] * texture2D(masks, uv).r * smoothstep(-0.5, 0.3, dot(n, dir[i]));
+      if (i == 2 || i == 3) trust *= 1.0 - 0.9 * centre;
+      if (trust <= 0.001) continue;
+      color[i] = texture2D(views, uv).rgb;
+      // Prefer views drawn from near the camera. A view that shows this spot
+      // poorly loses out sooner as the camera moves away from it.
+      score[i] = -(1.0 - dot(eye, dir[i])) * (100.0 + 300.0 * (1.0 - trust));
+      best = max(best, score[i]);
+    }
+    float total = exp(-2000.0 - best);
+    vec3 col = total * skin;
+    for (int i = 0; i < COUNT; i++) {
+      float w = exp(score[i] - best);
+      col += w * color[i];
+      total += w;
+    }
+    col /= total;
+    gl_FragColor = vec4(col, 1.0);
     #include <colorspace_fragment>
   }
 `;
@@ -108,49 +109,52 @@ function parseModel(buffer: ArrayBuffer) {
   let offset = 8;
   const positions = new Float32Array(buffer, offset, vertexCount * 3);
   offset += positions.byteLength;
-  const vis = new Uint8Array(buffer, offset, vertexCount * 5);
+  const vis = new Uint8Array(buffer, offset, vertexCount * COUNT);
   offset += vis.byteLength + ((4 - (vis.byteLength % 4)) % 4);
   const indices = new Uint16Array(buffer, offset, indexCount);
 
-  const sides = new Uint8Array(vertexCount * 4);
-  const top = new Uint8Array(vertexCount);
+  const visA = new Uint8Array(vertexCount * 4);
+  const visB = new Uint8Array(vertexCount * 2);
   for (let i = 0; i < vertexCount; i++) {
-    sides.set(vis.subarray(i * 5, i * 5 + 4), i * 4);
-    top[i] = vis[i * 5 + 4];
+    visA.set(vis.subarray(i * COUNT, i * COUNT + 4), i * 4);
+    visB.set(vis.subarray(i * COUNT + 4, i * COUNT + 6), i * 2);
   }
 
   const geometry = new THREE.BufferGeometry();
   geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
-  geometry.setAttribute("visSides", new THREE.BufferAttribute(sides, 4, true));
-  geometry.setAttribute("visTop", new THREE.BufferAttribute(top, 1, true));
+  geometry.setAttribute("visA", new THREE.BufferAttribute(visA, 4, true));
+  geometry.setAttribute("visB", new THREE.BufferAttribute(visB, 2, true));
   geometry.setIndex(new THREE.BufferAttribute(indices, 1));
   geometry.computeVertexNormals();
   return geometry;
 }
 
 export async function loadHead() {
-  const [buffer, views] = await Promise.all([
+  const loader = new THREE.TextureLoader();
+  const [buffer, views, masks] = await Promise.all([
     fetch(MODEL_URL).then((r) => {
       if (!r.ok) throw new Error(`Failed to load ${MODEL_URL}`);
       return r.arrayBuffer();
     }),
-    new THREE.TextureLoader().loadAsync(VIEWS_URL),
+    loader.loadAsync(VIEWS_URL),
+    loader.loadAsync(MASK_URL),
   ]);
   views.colorSpace = THREE.SRGBColorSpace;
   views.anisotropy = 4;
 
-  const rect = (r: readonly number[]) => new THREE.Vector4(r[0], r[1], r[2], r[3]);
+  const vec4 = (a: readonly number[]) => new THREE.Vector4(a[0], a[1], a[2], a[3]);
   const material = new THREE.ShaderMaterial({
     vertexShader,
     fragmentShader,
     uniforms: {
       views: { value: views },
-      rectFront: { value: rect(RECTS.front) },
-      rectBack: { value: rect(RECTS.back) },
-      rectLeft: { value: rect(RECTS.left) },
-      rectRight: { value: rect(RECTS.right) },
-      rectTop: { value: rect(RECTS.top) },
-      halfSize: { value: new THREE.Vector3(HALF_WIDTH, HALF_HEIGHT, HALF_DEPTH) },
+      masks: { value: masks },
+      projU: { value: VIEWS.map((v) => vec4(v.u)) },
+      projV: { value: VIEWS.map((v) => vec4(v.v)) },
+      rect: { value: VIEWS.map((v) => vec4(v.rect)) },
+      dir: { value: VIEWS.map((v) => new THREE.Vector3(...v.dir)) },
+      // Under the chin, where no view looks.
+      skin: { value: new THREE.Color(0xd9bfa5).convertSRGBToLinear() },
     },
   });
   // The views already carry their own lighting, so show them as they are.
@@ -163,5 +167,6 @@ export function disposeHead(head: THREE.Mesh) {
   head.geometry.dispose();
   const material = head.material as THREE.ShaderMaterial;
   (material.uniforms.views.value as THREE.Texture).dispose();
+  (material.uniforms.masks.value as THREE.Texture).dispose();
   material.dispose();
 }
